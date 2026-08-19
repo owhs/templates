@@ -2,5 +2,11 @@
   The home page is all blocks and no article furniture — the hero slider runs
   full-bleed straight under the header, so there is no centred title to push it
   down the page. Everything below comes from the block region.
+
+  The page still needs exactly one real <h1> (every hero slide heading below
+  is an <h2>, or aria-hidden entirely bar the first slide) — a visually-hidden
+  one carrying the same text as the page <title> gives search engines and
+  screen readers a real heading without disturbing the full-bleed hero design.
 {% endcomment %}
+<h1 class="visually-hidden">{{ site.name | escape }}{% if site.tagline %} — {{ site.tagline | escape }}{% endif %}</h1>
 {% region 'content' %}
