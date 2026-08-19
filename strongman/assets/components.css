@@ -674,6 +674,61 @@
   .product-nav a { transition: none; }
 }
 
+/* === FAQ toolbar ===========================================================
+   Search + category filter, built at runtime from the page's own H3 category
+   headings (see pages/faqs.liquid). Sticky under the site header, same as
+   the product nav, so the two sticky treatments stay visually consistent. */
+.faq-toolbar {
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .85rem;
+  padding: 1rem var(--page-margin);
+  margin-block: 1.5rem 0;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+.faq-search {
+  flex: 1 1 14rem;
+  min-width: 10rem;
+  max-width: 22rem;
+  padding: .55rem .9rem;
+  font-family: var(--body-font);
+  font-size: .92rem;
+  color: var(--ink);
+  background: var(--surface-muted, var(--page-bg));
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+}
+.faq-search:focus-visible { outline: 2px solid var(--link-color); outline-offset: 1px; }
+.faq-pills { display: flex; flex-wrap: wrap; gap: .5rem; }
+.faq-pill {
+  padding: .4rem .9rem;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-color-light);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: color .2s var(--transition), background .2s var(--transition), border-color .2s var(--transition);
+}
+.faq-pill:hover { color: var(--link-color); border-color: var(--link-color); }
+.faq-pill.is-active { color: #fff; background: var(--link-color); border-color: var(--link-color); }
+.faq-status {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: .85rem;
+  color: var(--text-color-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-pill { transition: none; }
+}
+
 /* === product tabs (legacy — no longer used by product pages, kept for any
    other content that still wants a tabbed layout) ==========================
    The tab strip reads as folder tabs: the active one shares its fill with the

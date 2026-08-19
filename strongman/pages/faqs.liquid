@@ -1,0 +1,114 @@
+{% comment %}
+  Dedicated template for the FAQ page (site/content/service/faqs.json sets
+  "template": "faqs" to opt into this rather than the default page template).
+
+  Content is already grouped into categories in the CMS (H3 heading + faq
+  block, repeated per category) -- this template adds a sticky search +
+  category filter toolbar at runtime, built from those same headings. Every
+  question and answer stays in the static HTML regardless of JS: filtering
+  only ever hides elements (via the `hidden` attribute), it never removes or
+  fetches content, so the page is fully crawlable and readable with
+  JavaScript off.
+{% endcomment %}
+<article class="content post tpl-faqs">
+  <header class="content__header content__narrow anim-hidden">
+    <h1 class="content__title">{{ doc.title | escape }}</h1>
+    {% if fields.lede %}<p class="content__lede">{{ fields.lede | escape }}</p>{% endif %}
+  </header>
+
+  <div class="content__body">
+    {% region 'content' %}
+  </div>
+</article>
+<script>
+(function () {
+  var article = document.querySelector('.tpl-faqs');
+  var body = article && article.querySelector('.content__body');
+  if (!body) return;
+
+  var heads = Array.prototype.slice.call(body.querySelectorAll(':scope > .wb-heading > h3[id]'));
+  var groups = heads.map(function (h) {
+    var wrap = h.parentElement;
+    var faq = wrap.nextElementSibling;
+    return (faq && faq.classList.contains('wb-faq')) ? { id: h.id, label: h.textContent, heading: wrap, faq: faq } : null;
+  }).filter(Boolean);
+  if (groups.length < 2) return;
+
+  var toolbar = document.createElement('div');
+  toolbar.className = 'faq-toolbar';
+
+  var search = document.createElement('input');
+  search.type = 'search';
+  search.className = 'faq-search';
+  search.placeholder = 'Search questions…';
+  search.setAttribute('aria-label', 'Search questions');
+  toolbar.appendChild(search);
+
+  var pills = document.createElement('div');
+  pills.className = 'faq-pills';
+  var allPill = document.createElement('button');
+  allPill.type = 'button';
+  allPill.className = 'faq-pill is-active';
+  allPill.textContent = 'All';
+  allPill.dataset.cat = 'all';
+  pills.appendChild(allPill);
+  groups.forEach(function (g) {
+    var p = document.createElement('button');
+    p.type = 'button';
+    p.className = 'faq-pill';
+    p.textContent = g.label;
+    p.dataset.cat = g.id;
+    pills.appendChild(p);
+  });
+  toolbar.appendChild(pills);
+
+  var status = document.createElement('p');
+  status.className = 'faq-status';
+  status.hidden = true;
+  toolbar.appendChild(status);
+
+  article.insertBefore(toolbar, body);
+
+  var activeCat = 'all';
+
+  function apply() {
+    var term = search.value.trim().toLowerCase();
+    var shown = 0;
+    groups.forEach(function (g) {
+      var catOn = activeCat === 'all' || activeCat === g.id;
+      var items = Array.prototype.slice.call(g.faq.querySelectorAll('.wb-faq-item'));
+      var groupHasMatch = false;
+      items.forEach(function (item) {
+        var matches = catOn && (!term || item.textContent.toLowerCase().indexOf(term) !== -1);
+        item.hidden = !matches;
+        if (matches) { groupHasMatch = true; shown++; }
+      });
+      g.heading.hidden = !groupHasMatch;
+      g.faq.hidden = !groupHasMatch;
+    });
+    if (term) {
+      status.hidden = false;
+      status.textContent = shown + (shown === 1 ? ' question matches “' : ' questions match “') + search.value + '”.';
+    } else {
+      status.hidden = true;
+    }
+  }
+
+  search.addEventListener('input', apply);
+  Array.prototype.slice.call(pills.children).forEach(function (p) {
+    p.addEventListener('click', function () {
+      Array.prototype.slice.call(pills.children).forEach(function (o) { o.classList.remove('is-active'); });
+      p.classList.add('is-active');
+      activeCat = p.dataset.cat;
+      apply();
+      if (activeCat !== 'all') {
+        var g = groups.filter(function (x) { return x.id === activeCat; })[0];
+        if (g) {
+          var top = g.heading.getBoundingClientRect().top + window.pageYOffset - (toolbar.offsetHeight + 24);
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+})();
+</script>
