@@ -1500,11 +1500,6 @@
 }
 .hero__content { width: fit-content; max-width: min(var(--hero-content-width), 100%); }
 
-/* Tab panels sit inset from the reading column on wide screens and go
-   full-bleed within it on narrow ones. */
-@media (min-width: 1200px) {
-  .wb-tabs .tab-panel { margin-inline: 4rem; }
-}
 
 /* The menu renderer appends a chevron to every catalogue row. The whole row is
    already a link and the detail pane on the right is the real affordance, so

@@ -211,6 +211,14 @@ main { display: block; }
 .content__body > .wb-gallery-wrap.is-full,
 .content__body > [data-wb-region] > .wb-gallery-wrap.is-full { grid-column: full; }
 
+/* Tabs carry the densest content on a product page — a multi-paragraph
+   description and a two-up spec table — so confining them to the same
+   74ch reading measure as a paragraph of prose reads as needlessly
+   cramped next to the full-width galleries around them. Give them the
+   wide column instead. */
+.content__body > .wb-tabs,
+.content__body > [data-wb-region] > .wb-tabs { grid-column: wide; }
+
 .content__narrow { grid-column: entry; }
 
 /* --- article header ------------------------------------------------------- */
