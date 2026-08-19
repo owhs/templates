@@ -624,7 +624,58 @@
   color: var(--text-color-light);
 }
 
-/* === product tabs =========================================================
+/* === product section nav ==================================================
+   A sticky in-page nav built at runtime from whichever H3 sections a product
+   page actually has (see pages/product.liquid) — sits directly under the
+   site header via --navbar-height, never on top of it. */
+.product-nav {
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 40;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--border-color);
+  margin-block: 1.5rem 0;
+}
+.product-nav a {
+  flex: none;
+  padding: .85rem 1.1rem;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--text-color-light);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: color .2s var(--transition), border-color .2s var(--transition);
+}
+.product-nav a:hover { color: var(--link-color); }
+.product-nav a.is-active { color: var(--link-color); border-bottom-color: var(--link-color); }
+.product-nav.is-stuck { box-shadow: 0 6px 18px rgba(0, 0, 0, .1); }
+
+/* Anchor jumps must clear both the real sticky header AND this sticky nav —
+   the sitewide scroll-padding-top only accounts for the header. */
+.tpl-product .content__body h3[id] {
+  scroll-margin-top: calc(var(--navbar-height) + 3.4rem);
+}
+
+/* Each H3 reads as a section break: a rule above it separates it from
+   whatever came before (gallery, previous section) without needing a
+   dedicated divider block in the content itself. */
+.tpl-product .content__body > .wb-heading {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-nav a { transition: none; }
+}
+
+/* === product tabs (legacy — no longer used by product pages, kept for any
+   other content that still wants a tabbed layout) ==========================
    The tab strip reads as folder tabs: the active one shares its fill with the
    panel border below it, so the two read as one object. */
 .wb-tabs { margin-block: 1.5rem; }

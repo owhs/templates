@@ -14,6 +14,13 @@
   the page itself leads with the whole title, and no range chip or repeated
   strapline sits above the copy.
 {% endcomment %}
+{% comment %}
+  Content is a linear scroll, not tabs: every H3 in the body (Overview,
+  Specifications, Description — whichever a given lift actually has) is a real
+  section, always visible and always crawlable, with a sticky in-page nav
+  built from those same headings. See the script below — it reads the h3 ids
+  the heading block already assigns, so there's nothing to keep in sync here.
+{% endcomment %}
 <article class="content post tpl-product">
   <header class="content__header content__narrow anim-hidden">
     <h1 class="content__title">{{ doc.title | escape }}</h1>
@@ -23,3 +30,49 @@
     {% region 'content' %}
   </div>
 </article>
+<script>
+(function () {
+  var article = document.querySelector('.tpl-product');
+  var body = article && article.querySelector('.content__body');
+  if (!body) return;
+  var heads = Array.prototype.slice.call(body.querySelectorAll('h3[id]'));
+  if (heads.length < 2) return;
+
+  var nav = document.createElement('nav');
+  nav.className = 'product-nav';
+  nav.setAttribute('aria-label', 'Sections on this page');
+  heads.forEach(function (h) {
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.textContent;
+    nav.appendChild(a);
+  });
+
+  var sentinel = document.createElement('div');
+  sentinel.className = 'product-nav-sentinel';
+  article.insertBefore(sentinel, body);
+  article.insertBefore(nav, body);
+
+  var links = Array.prototype.slice.call(nav.children);
+  function setActive(id) {
+    links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === '#' + id); });
+  }
+  setActive(heads[0].id);
+
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (e) { return e.isIntersecting; });
+      if (visible.length) {
+        visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+        setActive(visible[0].target.id);
+      }
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    heads.forEach(function (h) { spy.observe(h); });
+
+    var stuck = new IntersectionObserver(function (entries) {
+      nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
+    }, { threshold: 1 });
+    stuck.observe(sentinel);
+  }
+})();
+</script>
