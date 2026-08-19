@@ -1,7 +1,5 @@
 {% comment %}
-  A lift model. The page opens with the model name and its strapline, then the
-  block region carries the galleries, the description and the tabbed
-  description / uses / specification / downloads set.
+  A lift model. The page opens with the model name and its strapline.
 
   Titles are stored as "The Donnington: Car Parking / Stacking Lift" — the
   `name` and `strapline` fields split that so the heading can lead with the
@@ -9,106 +7,33 @@
   intact for search results and the browser tab.
 {% endcomment %}
 {% comment %}
-  One centred title and nothing else. The model name and strapline are still
-  stored separately — the range grids and the mega menu need them apart — but
-  the page itself leads with the whole title, and no range chip or repeated
-  strapline sits above the copy.
-{% endcomment %}
-{% comment %}
-  Content is a linear scroll, not tabs: every H3 in the body (Overview,
-  Specifications, Description — whichever a given lift actually has) is a real
-  section, always visible and always crawlable, with a sticky in-page nav
-  built from those same headings. See the script below — it reads the h3 ids
-  the heading block already assigns, so there's nothing to keep in sync here.
+  Two-column layout: the main column carries the galleries, overview and
+  description in normal reading order; a sticky sidebar carries the
+  specification sheet (grouped into a few titled spec-list blocks — see
+  site/content/product/*.json's "regions.sidebar") so a reader never has to
+  scroll away from the numbers to keep reading, or vice versa. FAQs and
+  related products (regions.related) run full-width below both columns.
 
-  The nav is inserted directly above the first section (Overview, or
-  Specifications where there's no Overview tab) rather than under the page
-  title — it sits in normal flow past the galleries/intro copy, and only
-  goes sticky once scrolling would carry it off-screen.
+  This replaces an earlier tabbed layout, and then a tab-free single-scroll
+  layout with a sticky jump nav — both tried and moved on from. No nav bar
+  here: with specs always visible in the sidebar, there's nothing left that
+  needs jumping to.
 {% endcomment %}
 <article class="content post tpl-product">
   <header class="content__header content__narrow anim-hidden">
     <h1 class="content__title">{{ doc.title | escape }}</h1>
   </header>
 
-  <div class="content__body">
-    {% region 'content' %}
+  <div class="product-layout">
+    <div class="product-main">
+      {% region 'content' %}
+    </div>
+    <aside class="product-sidebar">
+      {% region 'sidebar' %}
+    </aside>
+  </div>
+
+  <div class="product-full">
+    {% region 'related' %}
   </div>
 </article>
-<script>
-(function () {
-  var article = document.querySelector('.tpl-product');
-  var body = article && article.querySelector('.content__body');
-  if (!body) return;
-  var heads = Array.prototype.slice.call(body.querySelectorAll('h3[id]'));
-  if (heads.length < 2) return;
-
-  var firstWrap = heads[0].parentElement; // the heading block's own .wb-heading div
-
-  var nav = document.createElement('nav');
-  nav.className = 'product-nav';
-  nav.setAttribute('aria-label', 'Sections on this page');
-  heads.forEach(function (h) {
-    var a = document.createElement('a');
-    a.href = '#' + h.id;
-    a.textContent = h.textContent;
-    nav.appendChild(a);
-  });
-
-  var sentinel = document.createElement('div');
-  sentinel.className = 'product-nav-sentinel';
-  body.insertBefore(sentinel, firstWrap);
-  body.insertBefore(nav, firstWrap);
-
-  var links = Array.prototype.slice.call(nav.children);
-  var activeId = null;
-  function setActive(id) {
-    if (id === activeId) return;
-    activeId = id;
-    links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === '#' + id); });
-  }
-  setActive(heads[0].id);
-
-  // Scroll-position tracking: the "active" section is whichever heading's
-  // top has most recently crossed a reference line just under both sticky
-  // bars. Simpler and more reliable across short/uneven sections than an
-  // IntersectionObserver band, which can end up watching a strip of the
-  // viewport no section ever occupies.
-  var ticking = false;
-  function updateFromScroll() {
-    ticking = false;
-    // nav's own rendered position is the reference line, sticky or not: in
-    // normal flow it's wherever it naturally sits (so nothing registers as
-    // "passed" until you've actually scrolled to it); once pinned it settles
-    // at navbar-height + its own height, which is exactly the right line.
-    // Reading real geometry here (rather than branching on the is-stuck
-    // class, which flips asynchronously) also makes this correct on first
-    // paint even when the page loads already scrolled to a #hash.
-    var line = nav.getBoundingClientRect().bottom + 8;
-    var current = heads[0];
-    for (var i = 0; i < heads.length; i++) {
-      if (heads[i].getBoundingClientRect().top <= line) current = heads[i];
-    }
-    setActive(current.id);
-  }
-  function onScroll() {
-    if (!ticking) { ticking = true; requestAnimationFrame(updateFromScroll); }
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-
-  links.forEach(function (l) {
-    l.addEventListener('click', function () { setActive(l.getAttribute('href').slice(1)); });
-  });
-
-  if ('IntersectionObserver' in window) {
-    var stuck = new IntersectionObserver(function (entries) {
-      nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
-      updateFromScroll();
-    }, { threshold: 1 });
-    stuck.observe(sentinel);
-  }
-
-  updateFromScroll();
-})();
-</script>

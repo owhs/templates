@@ -1,0 +1,17 @@
+<div class="related-products">
+  {% if props.title %}<h2 class="related-products__title">{{ props.title | escape }}</h2>{% endif %}
+  <div class="cards-grid related-products__grid">
+    {% for it in props.items %}
+      <article class="card anim-hidden">
+        <a class="card" href="{{ it.href }}">
+          {% if it.image %}<figure class="card__image">{{ it.image | img: width: 480, sizes: '(max-width: 700px) 50vw, 300px' }}</figure>{% endif %}
+          <div class="card__content">
+            <h3 class="card__title">{{ it.name | escape }}</h3>
+            {% if it.strapline %}<p class="card__meta">{{ it.strapline | escape }}</p>{% endif %}
+            {% if it.reason %}<p class="card__entry">{{ it.reason | escape }}</p>{% endif %}
+          </div>
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+</div>

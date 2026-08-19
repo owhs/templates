@@ -5,7 +5,9 @@
   the table instead of drifting with the length of the metric ones.
 {% endcomment %}
 <div class="spec-block">
-  {% if props.title %}<h3 class="spec-title">{{ props.title | escape }}</h3>{% endif %}
+  {% if props.title %}
+    <h3 class="spec-title">{% if props.icon %}<span class="spec-title__icon">{{ props.icon | icon: 15 }}</span>{% endif %}{{ props.title | escape }}</h3>
+  {% endif %}
 
   <div class="spec-table">
     {% for r in props.rows %}

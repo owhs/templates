@@ -6,6 +6,7 @@
   "description": "Two-column technical data. Put a metric and imperial pair in one cell as \"3200 kg (7050 lb)\" and the two halves split onto their own lines so the figures stay aligned down the column.",
   "fields": [
     { "key": "title", "type": "text", "label": "Title" },
+    { "key": "icon", "type": "text", "label": "Icon", "width": "half", "help": "Name from the site icon set, e.g. compare, chart, bolt, gear, shield. Blank = no icon." },
     {
       "key": "rows",
       "type": "list",

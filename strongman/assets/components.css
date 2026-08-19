@@ -624,72 +624,88 @@
   color: var(--text-color-light);
 }
 
-/* === product section nav ==================================================
-   A sticky in-page nav built at runtime from whichever H3 sections a product
-   page actually has (see pages/product.liquid) — sits directly under the
-   site header via --navbar-height, never on top of it. */
-.product-nav {
-  grid-column: full;
-  position: sticky;
-  top: var(--navbar-height);
-  z-index: 40;
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-  background: var(--page-bg);
-  border-bottom: 1px solid var(--border-color);
+/* === product page layout ==================================================
+   Two columns: the main column is a plain block-flow reading column (not the
+   sitewide full/wide/entry content grid — a sidebar layout has no room for
+   full-bleed galleries, so every block here is one width), and a sticky
+   sidebar that carries the spec sheet so it's never more than a glance away
+   from whatever paragraph you're reading. FAQs and related products break
+   out to the page's normal wide measure below both columns. */
+.product-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
 }
-.product-nav-sentinel { grid-column: full; height: 0; }
-
-/* While the header's mega menu (or the mobile nav sheet) is open, it's a
-   fixed full-screen panel that must win every stacking fight — hiding the
-   product nav here is a cheap, certain way to guarantee this sticky element
-   can never be the thing standing in its way. */
-body.mega-open .product-nav,
-body.nav-open .product-nav {
-  display: none;
-}
-.product-nav a {
-  flex: none;
-  padding: .85rem 1.1rem;
-  font-size: .85rem;
-  font-weight: 600;
-  letter-spacing: .01em;
-  color: var(--text-color-light);
-  text-decoration: none;
-  border-bottom: 3px solid transparent;
-  white-space: nowrap;
-  transition: color .2s var(--transition), border-color .2s var(--transition);
-}
-.product-nav a:hover { color: var(--link-color); }
-.product-nav a.is-active { color: var(--link-color); border-bottom-color: var(--link-color); }
-.product-nav.is-stuck { box-shadow: 0 6px 18px rgba(0, 0, 0, .1); }
-
-/* Anchor jumps must clear both the real sticky header AND this sticky nav —
-   the sitewide scroll-padding-top only accounts for the header. */
-.tpl-product .content__body h3[id] {
-  scroll-margin-top: calc(var(--navbar-height) + 3.4rem);
+@media (max-width: 900px) {
+  .product-layout { grid-template-columns: 1fr; }
 }
 
-/* Each H3 reads as a section break: a rule above it separates it from
-   whatever came before (gallery, previous section) without needing a
-   dedicated divider block in the content itself. */
-.tpl-product .content__body > .wb-heading {
+.product-main > * { margin-block: 1.5rem; }
+.product-main > *:first-child { margin-top: 0; }
+
+.product-main > .wb-heading {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border-color);
 }
-/* The section right after the nav already reads as separated by the nav's
-   own border — a second border immediately under it just doubles up. */
-.product-nav + .wb-heading {
+.product-main > .wb-heading:first-child {
   margin-top: 0;
-  padding-top: 1.75rem;
+  padding-top: 0;
   border-top: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .product-nav a { transition: none; }
+.product-sidebar {
+  position: sticky;
+  top: calc(var(--navbar-height) + 1.5rem);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
+@media (max-width: 900px) {
+  .product-sidebar { position: static; margin-top: 2.5rem; }
+}
+.product-sidebar .spec-block { margin: 0; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+.product-sidebar .spec-block + .spec-block { border-top: 0; border-radius: 0; margin-top: -1px; }
+.product-sidebar .spec-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  padding: .65rem 1.1rem;
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--border-color);
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.product-sidebar .spec-title__icon { flex: none; display: inline-flex; color: var(--link-color); }
+/* The sitewide spec-row meets label and value in a centre gutter — built for
+   a wide two-column table. A 21rem sidebar reads better as a plain label-left
+   value-right line, so override it here rather than in the shared rule. */
+.product-sidebar .spec-row { display: flex; justify-content: space-between; gap: .6rem; padding: .5rem 1.1rem; font-size: .82rem; }
+.product-sidebar .spec-row > div { width: auto; margin: 0; text-align: left; }
+.product-sidebar .spec-row > div:first-child { color: var(--text-color-light); }
+.product-sidebar .spec-row > div:last-child { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.product-sidebar .spec-row:nth-child(even) { background: var(--surface-muted); }
+.product-sidebar .spec-row .split { display: flex; gap: .3rem; }
+
+.product-full {
+  max-width: 82rem;
+  margin-inline: auto;
+  padding: 3rem var(--page-margin) 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+}
+.product-full > * + * { margin-top: 3rem; }
+.product-full > .wb-heading:first-child h3 { text-align: center; }
+
+.related-products__title { text-align: center; font-size: 1.4rem; margin-bottom: 1.75rem; }
+.related-products .card__entry { font-style: italic; }
 
 /* === FAQ toolbar ===========================================================
    Search + category filter, built at runtime from the page's own H3 category
