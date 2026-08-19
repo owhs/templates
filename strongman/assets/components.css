@@ -629,6 +629,7 @@
    page actually has (see pages/product.liquid) — sits directly under the
    site header via --navbar-height, never on top of it. */
 .product-nav {
+  grid-column: full;
   position: sticky;
   top: var(--navbar-height);
   z-index: 40;
@@ -637,7 +638,16 @@
   overflow-x: auto;
   background: var(--page-bg);
   border-bottom: 1px solid var(--border-color);
-  margin-block: 1.5rem 0;
+}
+.product-nav-sentinel { grid-column: full; height: 0; }
+
+/* While the header's mega menu (or the mobile nav sheet) is open, it's a
+   fixed full-screen panel that must win every stacking fight — hiding the
+   product nav here is a cheap, certain way to guarantee this sticky element
+   can never be the thing standing in its way. */
+body.mega-open .product-nav,
+body.nav-open .product-nav {
+  display: none;
 }
 .product-nav a {
   flex: none;
@@ -668,6 +678,13 @@
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border-color);
+}
+/* The section right after the nav already reads as separated by the nav's
+   own border — a second border immediately under it just doubles up. */
+.product-nav + .wb-heading {
+  margin-top: 0;
+  padding-top: 1.75rem;
+  border-top: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

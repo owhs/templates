@@ -20,6 +20,11 @@
   section, always visible and always crawlable, with a sticky in-page nav
   built from those same headings. See the script below — it reads the h3 ids
   the heading block already assigns, so there's nothing to keep in sync here.
+
+  The nav is inserted directly above the first section (Overview, or
+  Specifications where there's no Overview tab) rather than under the page
+  title — it sits in normal flow past the galleries/intro copy, and only
+  goes sticky once scrolling would carry it off-screen.
 {% endcomment %}
 <article class="content post tpl-product">
   <header class="content__header content__narrow anim-hidden">
@@ -38,6 +43,8 @@
   var heads = Array.prototype.slice.call(body.querySelectorAll('h3[id]'));
   if (heads.length < 2) return;
 
+  var firstWrap = heads[0].parentElement; // the heading block's own .wb-heading div
+
   var nav = document.createElement('nav');
   nav.className = 'product-nav';
   nav.setAttribute('aria-label', 'Sections on this page');
@@ -50,29 +57,58 @@
 
   var sentinel = document.createElement('div');
   sentinel.className = 'product-nav-sentinel';
-  article.insertBefore(sentinel, body);
-  article.insertBefore(nav, body);
+  body.insertBefore(sentinel, firstWrap);
+  body.insertBefore(nav, firstWrap);
 
   var links = Array.prototype.slice.call(nav.children);
+  var activeId = null;
   function setActive(id) {
+    if (id === activeId) return;
+    activeId = id;
     links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === '#' + id); });
   }
   setActive(heads[0].id);
 
-  if ('IntersectionObserver' in window) {
-    var spy = new IntersectionObserver(function (entries) {
-      var visible = entries.filter(function (e) { return e.isIntersecting; });
-      if (visible.length) {
-        visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
-        setActive(visible[0].target.id);
-      }
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    heads.forEach(function (h) { spy.observe(h); });
+  // Scroll-position tracking: the "active" section is whichever heading's
+  // top has most recently crossed a reference line just under both sticky
+  // bars. Simpler and more reliable across short/uneven sections than an
+  // IntersectionObserver band, which can end up watching a strip of the
+  // viewport no section ever occupies.
+  var ticking = false;
+  function updateFromScroll() {
+    ticking = false;
+    // nav's own rendered position is the reference line, sticky or not: in
+    // normal flow it's wherever it naturally sits (so nothing registers as
+    // "passed" until you've actually scrolled to it); once pinned it settles
+    // at navbar-height + its own height, which is exactly the right line.
+    // Reading real geometry here (rather than branching on the is-stuck
+    // class, which flips asynchronously) also makes this correct on first
+    // paint even when the page loads already scrolled to a #hash.
+    var line = nav.getBoundingClientRect().bottom + 8;
+    var current = heads[0];
+    for (var i = 0; i < heads.length; i++) {
+      if (heads[i].getBoundingClientRect().top <= line) current = heads[i];
+    }
+    setActive(current.id);
+  }
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateFromScroll); }
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
 
+  links.forEach(function (l) {
+    l.addEventListener('click', function () { setActive(l.getAttribute('href').slice(1)); });
+  });
+
+  if ('IntersectionObserver' in window) {
     var stuck = new IntersectionObserver(function (entries) {
       nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
+      updateFromScroll();
     }, { threshold: 1 });
     stuck.observe(sentinel);
   }
+
+  updateFromScroll();
 })();
 </script>
