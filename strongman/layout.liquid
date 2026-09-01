@@ -95,7 +95,14 @@
         var open = document.querySelector('.site-header .nav-item.has-mega.open')
         var desktop = !matchMedia('(max-width: 1000px)').matches
         var on = !!open && desktop
+        // The lock lives on <html> (the root scroller). body{overflow:hidden}
+        // would turn body into a scroll container, and the sticky header
+        // inside it un-sticks — which is exactly the bug this used to cause:
+        // a panel measured against a header that had jumped back to the top
+        // of the document. See the html.mega-open note in components.css.
+        root.classList.toggle('mega-open', on)
         document.body.classList.toggle('mega-open', on)
+        if (on) window.scrollTo(0, 0)
         // Measure *after* the class lands: opening the panel hides the wordmark
         // banner, which lifts the header several hundred pixels. Measuring
         // first would pin the panel to where the header used to be and leave a

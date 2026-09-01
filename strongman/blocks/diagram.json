@@ -1,0 +1,13 @@
+{
+  "type": "diagram",
+  "label": "Diagram",
+  "group": "Strongman",
+  "icon": "chart",
+  "description": "svg-kit technical schematic — lift mechanisms, space checks, power and slab sections. Built sheets live in media/library (sm-*.svg).",
+  "fields": [
+    { "key": "image", "type": "image", "label": "Drawing", "help": "Pick an sm-* sheet from the drawings folder." },
+    { "key": "title", "type": "text", "label": "Title (overline)" },
+    { "key": "caption", "type": "text", "label": "Caption (under the figure)" }
+  ],
+  "defaults": {}
+}

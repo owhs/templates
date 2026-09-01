@@ -1,0 +1,16 @@
+{% comment %}
+  Technical schematics, rendered by the svg-kit (see tools/svg-kit): real
+  blueprint car line-work, dimension lines, hatched ground, beat-locked
+  animation. Each sheet is a built SVG in the media library, referenced by its
+  media id — the same pipeline photographs use, so derivatives and alt text
+  come free.
+{% endcomment %}
+<figure class="wb-diagram dg-kit">
+  {% if props.title %}<figcaption class="dg-title">{{ props.title | escape }}</figcaption>{% endif %}
+  {% if props.image %}
+    {{ props.image | img: width: 1200, sizes: '(min-width: 900px) 760px, 92vw', class: 'dg-img' }}
+  {% else %}
+    <div class="dg-canvas is-empty">Pick a drawing…</div>
+  {% endif %}
+  {% if props.caption %}<figcaption class="dg-caption">{{ props.caption | escape }}</figcaption>{% endif %}
+</figure>

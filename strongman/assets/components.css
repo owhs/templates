@@ -684,15 +684,18 @@
   letter-spacing: .05em;
 }
 .product-sidebar .spec-title__icon { flex: none; display: inline-flex; color: var(--link-color); }
-/* The sitewide spec-row meets label and value in a centre gutter — built for
-   a wide two-column table. A 21rem sidebar reads better as a plain label-left
-   value-right line, so override it here rather than in the shared rule. */
-.product-sidebar .spec-row { display: flex; justify-content: space-between; gap: .6rem; padding: .5rem 1.1rem; font-size: .82rem; }
-.product-sidebar .spec-row > div { width: auto; margin: 0; text-align: left; }
-.product-sidebar .spec-row > div:first-child { color: var(--text-color-light); }
-.product-sidebar .spec-row > div:last-child { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.product-sidebar .spec-row:nth-child(even) { background: var(--surface-muted); }
-.product-sidebar .spec-row .split { display: flex; gap: .3rem; }
+/* Inside the card the table tightens up: hairline rows, no outer border, the
+   striping carries the rhythm. The label column narrows because the sidebar
+   is only 21rem wide — long qualifiers wrap under the value instead of
+   fighting for the row. */
+.product-sidebar .spec-table { font-size: .82rem; }
+.product-sidebar .spec-table th[scope='row'],
+.product-sidebar .spec-table td { padding: .45rem .9rem; border-bottom: 0; }
+.product-sidebar .spec-table th[scope='row'] { width: 46%; padding-right: .75rem; }
+.product-sidebar .spec-table tbody tr { border-bottom: 1px solid var(--border-color); }
+.product-sidebar .spec-table tbody tr:last-child { border-bottom: 0; }
+.product-sidebar .spec-table tbody tr:nth-child(even) { background: var(--surface-muted); }
+.product-sidebar .spec-note { margin: 0; padding: .5rem .9rem; border-top: 1px solid var(--border-color); }
 
 .product-full {
   max-width: 82rem;
@@ -804,41 +807,62 @@
 .wb-tabs .tab-panel[hidden] { display: none; }
 
 /* === spec list ============================================================
-   Two-up label/value rows. Where a row's label or value carries a parenthetical
-   (e.g. "3200 kg (7050 lb)") the two halves split so the metric and imperial
-   figures stay aligned down the column. */
-.spec-table { display: grid; gap: 0; }
+   A real table: labels in a fixed left rail, values right-aligned in a
+   tabular-numeral column, optional qualifier as a muted second line under the
+   value. One design everywhere — product sidebars and guide pages share it.
 
-.spec-row { display: flex; }
-.spec-row > div { width: 100%; margin: 3px 1em; }
+   A value written "1848 mm (can stop at any point)" splits in the block
+   template; the bracketed half renders as .spec-sub under the figure. The
+   brackets themselves are drawn here so stored data stays clean. */
+.spec-block { margin-block: 1.5rem; }
+.spec-title { margin-bottom: .75rem; }
 
-/* The label column runs right-aligned into the centre gutter and the value
-   picks up the accent, so the eye reads the pair as one line rather than two
-   columns of unrelated text. A row with only one cell centres instead. */
-.spec-row > div:first-child { text-align: right; }
-.spec-row > div:only-child { text-align: center; }
-.spec-row > div:nth-child(2) { color: var(--link-color); }
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+.spec-table th[scope='row'],
+.spec-table td {
+  padding: .5rem .2rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-color);
+}
+.spec-table tr:last-child th,
+.spec-table tr:last-child td { border-bottom: 0; }
 
-/* The second half of a "3200 kg (7050 lb)" pair — the brackets are drawn by
-   CSS so the stored value stays clean data. */
-.spec-row .split > div:nth-child(2) {
-  font-size: small;
-  font-style: italic;
+.spec-table th[scope='row'] {
+  width: 52%;
+  padding-right: 1rem;
+  font-weight: var(--font-weight-normal);
   color: var(--text-color-light);
 }
-.spec-row .split > div:nth-child(2)::before { content: '('; }
-.spec-row .split > div:nth-child(2)::after { content: ')'; }
+.spec-table td {
+  text-align: right;
+  font-weight: var(--font-weight-semibold, 600);
+  font-variant-numeric: tabular-nums;
+}
+.spec-table .spec-val { display: block; }
+.spec-table .spec-sub {
+  display: block;
+  margin-top: .1rem;
+  font-size: .78em;
+  font-weight: var(--font-weight-normal);
+  font-style: italic;
+  font-variant-numeric: normal;
+  color: var(--text-color-light);
+}
+.spec-table .spec-sub::before { content: '('; }
+.spec-table .spec-sub::after { content: ')'; }
 
 .spec-note { margin-top: .75rem; font-size: .85rem; color: var(--text-color-light); }
 
-@media (max-width: 1200px) {
-  .spec-row {
-    flex-direction: column;
-    margin-bottom: 1em;
-    border-bottom: 2px solid var(--light);
-  }
-  .spec-row:last-child { border-bottom: 0; margin-bottom: 0; }
-  .spec-row > div { text-align: center !important; }
+@media (max-width: 480px) {
+  /* A phone sidebar has no room for two columns; stack each row instead. */
+  .spec-table th[scope='row'], .spec-table td { display: block; width: auto; }
+  .spec-table th[scope='row'] { padding-bottom: 0; }
+  .spec-table td { padding-top: .15rem; text-align: left; }
 }
 
 /* === project detail bar =================================================== */
@@ -1689,7 +1713,16 @@
    --header-h is measured and set by the theme script when the panel opens,
    because the header's distance from the top of the viewport depends on
    whether the banner above it has been scrolled past yet. */
-body.mega-open { overflow: hidden; }
+/*   The scroll lock lives on <html>, not <body>. body{overflow:hidden} turns
+   body into a scroll container, and a sticky element inside a scroll container
+   sticks to THAT container — so the moment the class landed, the header
+   un-stuck from the viewport and jumped back to its in-flow position at the
+   top of the document. Off-screen after a scroll, it measured a large
+   negative bottom, and the fixed panel was pinned up there with it: a
+   stretched, apparently empty dropdown. Locking the root scroller (html) is
+   what actually stops page scrolling anyway — body overflow doesn't propagate
+   to the viewport while html itself has a non-visible overflow-x. */
+html.mega-open { overflow: hidden; }
 body.mega-open .site-branding { display: none; }
 
 body.mega-open .site-header .mega-panel {
@@ -1847,3 +1880,37 @@ body.mega-open .mega-footer { flex: none; }
 /* On the dedicated search page the results are the content, so they sit in
    the flow rather than hovering as a dropdown over it. */
 .tpl-search .search-results { position: static; }
+
+/* === diagram block =========================================================
+   svg-kit schematics: the sheet is a built media-library SVG shown through the
+   standard <picture> pipeline. Sheets are drawn on white paper — the card is
+   white in both themes, framed like a print pinned to the page. */
+.wb-diagram {
+  margin-block: 2rem;
+  padding: 1.25rem 1.5rem 1rem;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+}
+.wb-diagram .dg-title {
+  margin: 0 0 .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-color-light);
+}
+.wb-diagram .dg-img,
+.wb-diagram .dg-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  background: #fff; /* the sheets are drawn on paper-white */
+}
+.wb-diagram .dg-caption {
+  margin: .6rem 0 0;
+  font-size: .85rem;
+  color: var(--text-color-light);
+}
