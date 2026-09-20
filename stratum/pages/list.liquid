@@ -58,7 +58,7 @@
         <h1>{{ concept.labelPlural | default: concept.label | escape }}</h1>
       </header>
 
-      <div class="sb-grid cols-3">
+      <div class="sb-grid cols-3{% if concept.name == 'project' %} is-photos{% endif %}">
         {% for d in docs %}{% include 'partials/sys-card' %}{% endfor %}
       </div>
     {% endif %}

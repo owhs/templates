@@ -31,17 +31,19 @@
         </p>
         {% if fields.code %}<p class="pdp-codeline"><span class="pdp-code"{{ 'code' | wbf }}>{{ fields.code }}</span> <span class="pdp-series">{{ fields.series }} series</span></p>{% endif %}
         <h1 class="pdp-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
-        {% if sub_line %}<p class="pdp-lede"{% if fields.tagline %}{{ 'tagline' | wbf }}{% else %}{{ 'strapline' | wbf }}{% endif %}>{{ sub_line | escape }}</p>{% endif %}
-        {% if fields.lede %}<p class="pdp-intro"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
+        {% comment %} A lift's title often already ends with its strapline — do not print it twice. {% endcomment %}
+        {% if doc.title contains sub_line %}{% assign sub_line = '' %}{% endif %}
+        {% if sub_line != '' and sub_line %}<p class="pdp-lede"{% if fields.tagline %}{{ 'tagline' | wbf }}{% else %}{{ 'strapline' | wbf }}{% endif %}>{{ sub_line | escape }}</p>{% endif %}
         <p class="pdp-actions">
           <a class="btn btn-primary" href="{{ site.vars.quoteHref | default: site.vars.ctaHref | default: '/contact' }}">{{ site.vars.quoteLabel | default: site.vars.ctaLabel | default: 'Request a quote' }}</a>
           {% if fields.datasheet.href %}<a class="btn btn-ghost" href="{{ fields.datasheet.href }}">Data sheet</a>{% endif %}
         </p>
       </div>
       {% if fields.cover %}
-        <div class="pdp-media art-plate on-plate">
+        {% assign media_kind = 'is-photo' %}{% if fields.code %}{% assign media_kind = 'is-drawing' %}{% endif %}
+        <div class="pdp-media art-plate on-plate {{ media_kind }}">
           {{ fields.cover | img: width: 1100, sizes: '(max-width: 960px) 92vw, 620px' }}
-          <span class="art-cap">Fig. 01 — {{ fields.code | default: doc.title }} · schematic arrangement</span>
+          {% if fields.code %}<span class="art-cap">Fig. 01 — {{ fields.code }} · schematic arrangement</span>{% endif %}
         </div>
       {% endif %}
     </div>
@@ -84,6 +86,21 @@
       <div class="pdp-main">{% region 'content' %}</div>
       <aside class="pdp-side">{% region 'sidebar' %}</aside>
     </div>
+    <script>
+      /* The specification sheet follows the reader down the page only while the
+         whole of it fits on screen. A sheet taller than the window scrolls with
+         the page instead, so its last rows are never stuck below the fold. */
+      ;(function () {
+        var side = document.querySelector('.pdp-side'); if (!side) return
+        var fit = function () {
+          var head = document.querySelector('.site-header')
+          var room = window.innerHeight - (head ? head.offsetHeight : 0) - 40
+          side.classList.toggle('is-tall', side.scrollHeight > room)
+        }
+        fit(); window.addEventListener('resize', fit); window.addEventListener('load', fit)
+        if (window.ResizeObserver) new ResizeObserver(fit).observe(side)
+      })()
+    </script>
   {% else %}
     {% region 'content' %}
   {% endif %}

@@ -100,7 +100,7 @@
 .wb-gallery { display: grid; gap: 1px; background: var(--line); grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); }
 @media (min-width: 700px) { .wb-gallery.cols-3 { grid-template-columns: repeat(3, 1fr); } .wb-gallery.cols-4 { grid-template-columns: repeat(4, 1fr); } }
 .wb-gallery figure { background: var(--bg-raise); }
-.wb-gallery img { width: 100%; object-fit: contain; aspect-ratio: 4/3; }
+.wb-gallery img { width: 100%; object-fit: contain; aspect-ratio: 4/3 !important; }
 
 .lightbox-overlay { position: fixed; inset: 0; z-index: 300; background: oklch(12% 0.01 var(--plate-hue) / .92); display: grid; place-items: center; padding: 2rem; animation: lb-in .18s ease; backdrop-filter: blur(6px); }
 .lightbox-overlay img { max-width: min(92vw, 76rem); max-height: 88vh; width: auto; }
@@ -349,7 +349,7 @@
 @media (min-width: 760px) { .rel-grid { grid-template-columns: repeat(3, 1fr); } }
 .rel-card { display: grid; background: var(--bg-raise); text-decoration: none; color: var(--ink); transition: background .16s; }
 .rel-card:hover { background: var(--bg-subtle); color: var(--ink); }
-.rel-media img { width: 100%; aspect-ratio: 16/10; object-fit: contain; background: var(--bg-subtle); }
+.rel-media img { width: 100%; aspect-ratio: 16/10 !important; object-fit: contain; background: var(--bg-subtle); }
 .rel-body { padding: 1.2rem 1.3rem 1.5rem; display: grid; gap: 0.5rem; }
 .rel-title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-l); text-transform: uppercase; letter-spacing: 0.03em; }
 .rel-desc { font-size: var(--text-s); color: var(--ink-mute); }
@@ -431,7 +431,7 @@
 @media (min-width: 1000px) { .post-grid { grid-template-columns: repeat(3, 1fr); } }
 .post-card { display: grid; align-content: start; background: var(--bg-raise); text-decoration: none; color: var(--ink); transition: background .16s; }
 .post-card:hover { background: var(--bg-subtle); color: var(--ink); }
-.post-card-media img { width: 100%; aspect-ratio: 16/10; object-fit: contain; background: var(--bg-subtle); }
+.post-card-media img { width: 100%; aspect-ratio: 16/10 !important; object-fit: contain; background: var(--bg-subtle); }
 .post-card-body { padding: 1.3rem 1.4rem 1.6rem; display: grid; gap: 0.6rem; }
 .post-card-body time { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
 .post-card-body h2 { font-size: var(--text-l); }
@@ -562,7 +562,7 @@
 }
 .sys-card:hover::after { scale: 1 1; }
 .sys-media { position: relative; background: var(--bg-subtle); padding: 1rem; border-bottom: 1px solid var(--line-soft); }
-.sys-media img { width: 100%; aspect-ratio: 16/10; object-fit: contain; }
+.sys-media img { width: 100%; aspect-ratio: 16/10 !important; object-fit: contain; }
 .sys-code {
   position: absolute; top: 0.7rem; left: 0.7rem; font-family: var(--font-mono); font-size: 0.6rem;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-contrast); background: var(--accent);
@@ -825,7 +825,8 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 @media (max-width: 640px) { .bh-w-entry { width: calc(100% - 2rem); } }
 
 /* ---------------------------- photo row --------------------------------- */
-.sm-photos { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); grid-template-columns: repeat(2, 1fr); }
+/* no lattice colour behind the grid: a short last row would show it as a grey box */
+.sm-photos { display: grid; gap: 2px; grid-template-columns: repeat(2, 1fr); }
 .sm-photos.cols-1 { grid-template-columns: 1fr; }
 .sm-photos.cols-auto { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
 @media (min-width: 700px) {
@@ -846,15 +847,15 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-photos[data-gallery] .sm-photo img { cursor: zoom-in; }
 
 /* frame shape — only meaningful when the images are cropped or padded */
-.sm-photos.ratio-16-9 img { aspect-ratio: 16/9; }
-.sm-photos.ratio-3-2 img  { aspect-ratio: 3/2; }
-.sm-photos.ratio-4-3 img  { aspect-ratio: 4/3; }
-.sm-photos.ratio-1-1 img  { aspect-ratio: 1/1; }
-.sm-photos.ratio-3-4 img  { aspect-ratio: 3/4; }
-.sm-photos.ratio-slim img { aspect-ratio: 21/7; }
+.sm-photos.ratio-16-9 img { aspect-ratio: 16/9 !important; }
+.sm-photos.ratio-3-2 img  { aspect-ratio: 3/2 !important; }
+.sm-photos.ratio-4-3 img  { aspect-ratio: 4/3 !important; }
+.sm-photos.ratio-1-1 img  { aspect-ratio: 1/1 !important; }
+.sm-photos.ratio-3-4 img  { aspect-ratio: 3/4 !important; }
+.sm-photos.ratio-slim img { aspect-ratio: 21/7 !important; }
 .sm-photos.fit-cover img   { object-fit: cover; }
 .sm-photos.fit-contain img { object-fit: contain; padding: 0.6rem; }
-.sm-photos.fit-natural img, .sm-photos.fit-masonry img { aspect-ratio: auto; object-fit: contain; height: auto; }
+.sm-photos.fit-natural img, .sm-photos.fit-masonry img { aspect-ratio: auto !important; object-fit: contain; height: auto; }
 
 /* masonry: natural heights packed into columns rather than a row grid */
 .sm-photos.fit-masonry { display: block; columns: 2; column-gap: 2px; background: none; border: 0; }
@@ -911,6 +912,10 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 @media (min-width: 820px) { .sm-tiles.cols-2 { grid-template-columns: repeat(2, 1fr); } }
 .sm-tile { position: relative; display: grid; background: var(--plate); min-height: 20rem; isolation: isolate; }
 .sm-tile-media { margin: 0; position: absolute; inset: 0; z-index: -1; }
+/* the image helper wraps the <img> in a <picture>; both must fill the frame or
+   the photo keeps its natural height and spills out of the tile */
+.sm-tile-media, .sm-hero-media { overflow: hidden; }
+:is(.sm-tile-media, .sm-hero-media) picture { position: absolute; inset: 0; display: block; }
 .sm-tile-media img { width: 100%; height: 100%; object-fit: cover; }
 .sm-tile::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
@@ -929,6 +934,9 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-intro-title { font-size: var(--text-2xl); line-height: 1.02; text-wrap: balance; }
 .sm-intro-head { border-top: 2px solid var(--accent); padding-top: 0.9rem; }
 .sm-intro-body { max-width: 62ch; }
+/* a text block in a wide section still lines up with the header and the
+   reading column; only pictures and tiles use the extra width */
+.container.w-wide > :is(.sm-intro, .faq, .wb-heading), .bh-w-wide.sm-intro { max-width: 78rem; margin-inline: auto; }
 .sm-intro-body.is-justified { text-align: justify; hyphens: auto; }
 
 /* ------------------------------- hero ----------------------------------- */
@@ -946,7 +954,7 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-hero-media img { width: 100%; height: 100%; object-fit: cover; }
 .sm-hero-slide::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(0deg, var(--plate-deep) 2%, color-mix(in oklch, var(--plate-deep) 55%, transparent) 46%, transparent 82%);
+  background: linear-gradient(0deg, color-mix(in oklch, var(--plate-deep) 88%, transparent) 0%, color-mix(in oklch, var(--plate-deep) 40%, transparent) 34%, transparent 62%);
 }
 .sm-hero-copy {
   position: relative; z-index: 1; width: min(100% - 2.6rem, var(--container)); margin-inline: auto;
@@ -1005,7 +1013,7 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 a.card { display: grid; text-decoration: none; color: inherit; height: 100%; align-content: start; transition: background .18s; }
 a.card:hover { background: var(--bg-subtle); }
 .card__image { margin: 0; background: var(--bg-subtle); padding: 1rem; border-bottom: 1px solid var(--line-soft); }
-.card__image img { width: 100%; aspect-ratio: 16/10; object-fit: contain; }
+.card__image img { width: 100%; aspect-ratio: 16/10 !important; object-fit: contain; }
 .card__content { padding: 1.2rem 1.3rem 1.5rem; display: grid; gap: 0.55rem; }
 .card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-l); text-transform: uppercase; letter-spacing: 0.04em; }
 .card__meta { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
@@ -1067,8 +1075,55 @@ a.card:hover { background: var(--bg-subtle); }
 .pdp-side { min-width: 0; display: grid; gap: 1.8rem; align-content: start; }
 @media (min-width: 1000px) { .pdp-side { position: sticky; top: calc(var(--header-h, 4rem) + 1.2rem); } }
 .pdp-side .sb-spec { max-width: none; }
+/* a sheet taller than the window is not pinned (see the script in product.liquid) */
+.pdp-side.is-tall { position: static; }
+/* inside the story column every block is as wide as the column — the page
+   width classes are for blocks that sit straight on the page */
+.pdp-main > [class*="bh-w-"], .pdp-side > [class*="bh-w-"] { width: 100%; max-width: none; margin-inline: 0; }
+.pdp-main > .sm-diagram { max-width: none; }
+/* a product photograph, not a drawing: plain white mount, no figure caption */
+.pdp-media.is-photo { background: #fff; padding: clamp(0.8rem, 2vw, 1.4rem); display: grid; place-items: center; }
+.pdp-media.is-photo::before, .pdp-media.is-photo::after { display: none; }
+.pdp-media.is-photo img { width: 100%; height: auto; max-height: 24rem; object-fit: contain; }
 .pdp-related { padding-top: 0; }
 .sys-lede { font-size: var(--text-s); color: var(--ink-mute); }
 
 /* An unused footer-columns slot must not add a gap (automatic leaves it empty). */
 .footer-cols:empty { display: none; }
+
+/* ==== blocks placed straight on a page ====
+   A block outside any section has no container of its own. Without a width
+   the author chose, it takes the normal column — never the window edge. */
+:is(main, main > article) > :not(section, header, article, footer, nav, script, style, .pdp-split, .visually-hidden, [class*="bh-w-"]) {
+  width: min(100% - 6rem, var(--container)); margin-inline: auto;
+}
+@media (max-width: 40rem) {
+  :is(main, main > article) > :not(section, header, article, footer, nav, script, style, .pdp-split, .visually-hidden, [class*="bh-w-"]) { width: calc(100% - 2rem); }
+}
+/* running text keeps its reading measure but starts on the column's left edge,
+   in line with the headings and pictures around it */
+/* One reading column, centred, shared by the page title, the running text and
+   any heading between them — so a centred heading sits over the text it
+   introduces and wider pictures open out evenly either side. */
+:is(main, main > article) > .prose { max-width: none; }
+:is(main, main > article) > .prose > *,
+:is(main, main > article) > .wb-heading > *,
+.doc-head > * { max-width: 52rem; margin-inline: auto; width: 100%; }
+.doc-head > .eyebrow { display: block; }
+:is(main, main > article) > .sm-diagram { max-width: 52rem; }
+:is(main, main > article) > :not(section, header, article, footer, nav, script, style, .visually-hidden) { margin-block: clamp(1.4rem, 3vw, 2.4rem); }
+:is(main, main > article) > .sm-photos + .sm-photos { margin-top: 2px; }
+
+/* photographs fill their card; drawings (the catalogue) stay whole */
+.sb-grid.is-photos .sys-media { padding: 0; }
+.sb-grid.is-photos .sys-media img { object-fit: cover; aspect-ratio: 3/2 !important; }
+/* a last row with fewer cards must not show the lattice colour as grey boxes */
+.sb-grid, .cards-grid { background: none; border: 0; gap: 0; }
+.sb-grid > *, .cards-grid > * { outline: 1px solid var(--line); outline-offset: -0.5px; }
+
+/* FAQ page: title, search, filters and every question share the reading column */
+.faqs-body { width: min(100% - 6rem, 52rem); margin-inline: auto; display: grid; gap: 1.4rem; padding-bottom: clamp(2rem, 5vw, 4rem); }
+@media (max-width: 40rem) { .faqs-body { width: calc(100% - 2rem); } }
+.faqs-body > * { width: 100%; max-width: none; margin: 0; }
+.faqs-body .wb-heading { margin-top: 1.2rem; text-align: left; }
+.faqs-body .wb-faq { max-width: none; margin: 0; }

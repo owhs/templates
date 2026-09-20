@@ -16,6 +16,6 @@
         {% for s in d.fields.keySpecs %}<span class="row"><span class="k">{{ s.label | escape }}</span><span class="v">{{ s.value | escape }}</span></span>{% endfor %}
       </span>
     {% endif %}
-    <span class="sys-more">View system →</span>
+    <span class="sys-more">{% if d.fields.code %}View system{% else %}View{% endif %} →</span>
   </span>
 </a>

@@ -150,6 +150,8 @@
   .utility-bar a:hover { color: var(--accent); }
   .utility-note { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; }
   .utility-note .dot { width: 5px; height: 5px; background: var(--signal); flex: none; }
+  /* no announcement written: no marker either */
+  .utility-note .dot:only-child { display: none; }
   .utility-links { margin-left: auto; display: flex; align-items: center; gap: 1.4rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; }
   .utility-bar p { margin: 0; }
   .utility-bar .wb-richtext, .utility-bar .prose { font-size: inherit; color: var(--plate-mute); max-width: none; }
@@ -340,6 +342,9 @@
      button stay reachable while the panel owns the rest of the viewport. The
      panel itself never scrolls — only the item list does — so there is one
      scrollbar on screen instead of three. */
+  /* desktop only: on a phone the panel is a scrolling drill-down, and these
+     fixed heights squash its rows on top of each other */
+  @media (min-width: 1001px) {
   .site-header[data-nav-fill="true"] .mega-panel.mega-full {
     height: calc(100dvh - var(--header-h)); max-height: none; border-bottom: 0;
     display: flex; flex-direction: column; overflow: hidden;
@@ -365,6 +370,7 @@
   .site-header[data-nav-fill="true"] .mega-showcase { height: 100%; min-height: 0; }
   .site-header[data-nav-fill="true"] .mega-cards { overflow-y: auto; max-height: 100%; }
   .site-header[data-nav-fill="true"] .mega-footer { flex: none; }
+  }
   .mega-close {
     position: absolute; top: 1rem; right: 1.1rem; z-index: 4;
     width: 2.4rem; height: 2.4rem; display: none; place-items: center; cursor: pointer;
@@ -372,7 +378,7 @@
     transition: background .15s, color .15s, border-color .15s;
   }
   .mega-close:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .site-header[data-nav-fill="true"] .mega-close { display: grid; }
+  @media (min-width: 1001px) { .site-header[data-nav-fill="true"] .mega-close { display: grid; } }
 
   .nav-burger { display: none; }
 
@@ -539,6 +545,10 @@ body[data-nav-veil="all"] > main, body[data-nav-veil="all"] > .site-footer { fil
   .mc-list { border-right: 0; max-height: none; overflow: visible; }
   .mc-item { padding-left: clamp(1rem, 5vw, 1.6rem); }
   .mc-detail { display: none; }
+  /* the drill-down panel is a scrolling flex column: nothing in it may shrink,
+     or the lists collapse and the rows below are drawn over them */
+  .mega-catalogue, .mc-panes { display: block; min-height: auto; }
+  .mega-panel > *, .drop-panel > *, .mega-scroll > * { flex: none; }
 }
 
 /* ================================ FOOTER ================================ */

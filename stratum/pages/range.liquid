@@ -8,7 +8,6 @@
     <div class="container w-normal doc-head">
       <p class="eyebrow">{{ concept.label | default: 'Range' | escape }}</p>
       <h1 class="doc-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
-      {% if fields.lede %}<p class="doc-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
     </div>
   </header>
 
