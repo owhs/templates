@@ -557,6 +557,23 @@ body[data-nav-veil="all"] > main, body[data-nav-veil="all"] > .site-footer { fil
   .mega-panel > *, .drop-panel > *, .mega-scroll > * { flex: none; }
 }
 
+/* Full-screen menu: the list and the detail pane use all the height there is.
+   These sit out here, unlayered, because the size limits above are unlayered
+   too — inside the nav layer they lost, which left a short list with its own
+   little scrollbar in a panel that had room to spare. */
+@media (min-width: 1001px) {
+  .site-header[data-nav-fill="true"] .mc-list { max-height: none; height: 100%; }
+  .site-header[data-nav-fill="true"] .mc-detail { max-height: none; height: 100%; overflow: hidden; }
+  .site-header[data-nav-fill="true"] .mc-tabpane.active { min-height: 0; height: 100%; }
+}
+
+/* Things you click or drag, not text you copy: no accidental blue selection. */
+.site-header .nav, .nav-link, .mega-panel, .drop-panel, .nav-burger, .text-size, .header-cta,
+.btn, .sys-card, .rel-card, .post-card, .mega-card, .mc-item, .mc-tab-btn, .mega-tile, .mega-brand,
+.sm-hero, .sm-tile, .sm-photos, .sm-linkrow, a.card, .cat-chip, .faq-pills, .wb-faq-item summary,
+.lightbox-overlay, .pagination { -webkit-user-select: none; user-select: none; }
+.sm-hero img, .sm-tile img, .sm-photos img, .sys-card img, a.card img { -webkit-user-drag: none; }
+
 /* ================================ FOOTER ================================ */
 
 @layer footer {
