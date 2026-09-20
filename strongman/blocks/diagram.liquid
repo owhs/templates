@@ -5,12 +5,12 @@
   media id — the same pipeline photographs use, so derivatives and alt text
   come free.
 {% endcomment %}
-<figure class="wb-diagram dg-kit">
-  {% if props.title %}<figcaption class="dg-title">{{ props.title | escape }}</figcaption>{% endif %}
+<figure class="wb-diagram dg-kit"{{ 'image' | wbe: 'img' }}>
+  {% if props.title %}<figcaption class="dg-title"{{ 'title' | wbe }}>{{ props.title | escape }}</figcaption>{% endif %}
   {% if props.image %}
     {{ props.image | img: width: 1200, sizes: '(min-width: 900px) 760px, 92vw', class: 'dg-img' }}
   {% else %}
     <div class="dg-canvas is-empty">Pick a drawing…</div>
   {% endif %}
-  {% if props.caption %}<figcaption class="dg-caption">{{ props.caption | escape }}</figcaption>{% endif %}
+  {% if props.caption %}<figcaption class="dg-caption"{{ 'caption' | wbe }}>{{ props.caption | escape }}</figcaption>{% endif %}
 </figure>

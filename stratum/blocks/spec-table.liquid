@@ -1,9 +1,9 @@
 <div class="sb-spec">
-  {% if props.title %}<h3 class="spec-title">{{ props.title | escape }}</h3>{% endif %}
+  {% if props.title %}<h3 class="spec-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h3>{% endif %}
   <dl class="spec-list">
     {% for r in props.rows %}
-      <div class="spec-row"><dt>{{ r.label | escape }}</dt><dd>{{ r.value | escape }}</dd></div>
+      <div class="spec-row"><dt{{ 'rows' | wbe_at: forloop.index0, 'label' }}>{{ r.label | escape }}</dt><dd{{ 'rows' | wbe_at: forloop.index0, 'value' }}>{{ r.value | escape }}</dd></div>
     {% endfor %}
   </dl>
-  {% if props.note %}<p class="spec-note">{{ props.note | escape }}</p>{% endif %}
+  {% if props.note %}<p class="spec-note"{{ 'note' | wbe }}>{{ props.note | escape }}</p>{% endif %}
 </div>

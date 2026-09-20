@@ -15,9 +15,9 @@
           <polygon points="95,44 105,44 100,50" fill="currentColor" opacity="0.5"/>
         </svg>
       {% else %}
-        <div class="brand-strip-name">{{ item.name | escape }}</div>
+        <div class="brand-strip-name"{{ 'items' | wbe_at: forloop.index0, 'name' }}>{{ item.name | escape }}</div>
       {% endif %}
-      {% if item.description %}<div class="brand-strip-desc">{{ item.description | escape }}</div>{% endif %}
+      {% if item.description %}<div class="brand-strip-desc"{{ 'items' | wbe_at: forloop.index0, 'description' }}>{{ item.description | escape }}</div>{% endif %}
       {% if item.link.href %}<a class="brand-strip-link" href="{{ item.link.href }}">Explore range &rarr;</a>{% endif %}
     </div>
   {% endfor %}

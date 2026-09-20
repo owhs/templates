@@ -21,15 +21,15 @@
         </div>
     <div class="container tp-hero-content">
       <div class="tp-hero-copy">
-        {% if fields.brand %}<p class="tp-hero-brand">{{ fields.brand | upcase | escape }}</p>{% endif %}
+        {% if fields.brand %}<p class="tp-hero-brand"{{ 'brand' | wbf }}>{{ fields.brand | upcase | escape }}</p>{% endif %}
         {% if fields.category %}<p class="tp-hero-cat">{{ fields.category | upcase | escape }} SYSTEM</p>{% endif %}
         <h1>{{ page.title | escape }}</h1>
-        {% if fields.tagline %}<p class="tp-hero-tagline">{{ fields.tagline | escape }}</p>{% endif %}
+        {% if fields.tagline %}<p class="tp-hero-tagline"{{ 'tagline' | wbf }}>{{ fields.tagline | escape }}</p>{% endif %}
         {% if fields.capacity or fields.liftingHeight %}
         <div class="tp-hero-specs">
-          {% if fields.capacity %}<div class="tp-spec"><span class="tp-spec-label">Capacity</span><span class="tp-spec-value">{{ fields.capacity | escape }}</span></div>{% endif %}
-          {% if fields.liftingHeight %}<div class="tp-spec"><span class="tp-spec-label">Height</span><span class="tp-spec-value">{{ fields.liftingHeight | escape }}</span></div>{% endif %}
-          {% if fields.drive %}<div class="tp-spec"><span class="tp-spec-label">Drive</span><span class="tp-spec-value">{{ fields.drive | escape }}</span></div>{% endif %}
+          {% if fields.capacity %}<div class="tp-spec"><span class="tp-spec-label">Capacity</span><span class="tp-spec-value"{{ 'capacity' | wbf }}>{{ fields.capacity | escape }}</span></div>{% endif %}
+          {% if fields.liftingHeight %}<div class="tp-spec"><span class="tp-spec-label">Height</span><span class="tp-spec-value"{{ 'liftingHeight' | wbf }}>{{ fields.liftingHeight | escape }}</span></div>{% endif %}
+          {% if fields.drive %}<div class="tp-spec"><span class="tp-spec-label">Drive</span><span class="tp-spec-value"{{ 'drive' | wbf }}>{{ fields.drive | escape }}</span></div>{% endif %}
         </div>
         {% endif %}
         <div class="tp-hero-actions">

@@ -1,8 +1,8 @@
 <div class="footer__item">
-  {% if props.title %}<h3 class="footer__heading">{{ props.title | escape }}</h3>{% endif %}
+  {% if props.title %}<h3 class="footer__heading"{{ 'title' | wbe }}>{{ props.title | escape }}</h3>{% endif %}
   <ul>
     {% for l in props.links %}
-      <li><a href="{{ l.href }}"{% if l.title %} title="{{ l.title | escape }}"{% endif %}>{{ l.label | escape }}</a></li>
+      <li><a href="{{ l.href }}"{% if l.title %} title="{{ l.title | escape }}"{% endif %}><span{{ 'links' | wbe_at: forloop.index0, 'label' }}>{{ l.label | escape }}</span></a></li>
     {% endfor %}
   </ul>
 </div>

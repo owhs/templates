@@ -4,7 +4,7 @@
 {%- endcomment -%}
 <div class="tpl-product">
   {% if fields.cover %}
-    <div class="tp-hero container">{{ fields.cover | img: width: 1600 }}</div>
+    <div class="tp-hero container"{{ 'cover' | wbf: 'img' }}>{{ fields.cover | img: width: 1600 }}</div>
   {% endif %}
   {% region 'content' %}
 </div>

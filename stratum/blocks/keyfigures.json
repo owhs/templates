@@ -1,9 +1,9 @@
 {
   "type": "keyfigures",
-  "label": "Key figures rail",
+  "label": "Key figures",
   "group": "Stratum",
   "icon": "chart",
-  "description": "A ruled rail of numbers — capacity, cycle time, footprint. Mono labels, tabular figures.",
+  "description": "A neat strip of headline numbers — capacity, cycle time, floor space.",
   "fields": [
     { "key": "items", "type": "list", "label": "Figures", "item": [
       { "key": "k", "type": "text", "label": "Label" },

@@ -11,11 +11,11 @@
         <p class="pdp-crumb">
           <a href="/systems">Systems</a> <span aria-hidden="true">/</span>
           <span>{{ cat_label }}</span>
-          {% if fields.brand %}<span aria-hidden="true">/</span> <span>{{ fields.brand | upcase }}</span>{% endif %}
+          {% if fields.brand %}<span aria-hidden="true">/</span> <span{{ 'brand' | wbf }}>{{ fields.brand | upcase }}</span>{% endif %}
         </p>
-        {% if fields.code %}<p class="pdp-codeline"><span class="pdp-code">{{ fields.code }}</span> <span class="pdp-series">{{ fields.series }} series</span></p>{% endif %}
-        <h1 class="pdp-title">{{ doc.title | escape }}</h1>
-        {% if fields.tagline %}<p class="pdp-lede">{{ fields.tagline | escape }}</p>{% endif %}
+        {% if fields.code %}<p class="pdp-codeline"><span class="pdp-code"{{ 'code' | wbf }}>{{ fields.code }}</span> <span class="pdp-series">{{ fields.series }} series</span></p>{% endif %}
+        <h1 class="pdp-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+        {% if fields.tagline %}<p class="pdp-lede"{{ 'tagline' | wbf }}>{{ fields.tagline | escape }}</p>{% endif %}
         <p class="pdp-actions">
           <a class="btn btn-primary" href="{{ site.vars.quoteHref | default: '/contact' }}">Request a quote</a>
           {% if fields.datasheet.href %}<a class="btn btn-ghost" href="{{ fields.datasheet.href }}">Data sheet</a>{% endif %}

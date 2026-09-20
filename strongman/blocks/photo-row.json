@@ -3,7 +3,7 @@
   "label": "Photo row",
   "group": "Strongman",
   "icon": "copy",
-  "description": "A row of photographs that can break out of the reading column. Choose how many across, how wide the row runs, and how each shot sits in its frame.",
+  "description": "A row of photographs that can run wider than the text above it. Choose how many across, how wide the row runs, and how each shot sits in its frame.",
   "fields": [
     {
       "key": "images",
@@ -23,22 +23,24 @@
       "width": "half",
       "options": [
         { "value": "auto", "label": "Auto — fit as many as will sit comfortably" },
-        { "value": "1" },
-        { "value": "2" },
-        { "value": "3" },
-        { "value": "4" }
+        { "value": "1", "label": "One" },
+        { "value": "2", "label": "Two" },
+        { "value": "3", "label": "Three" },
+        { "value": "4", "label": "Four" }
       ]
     },
     {
       "key": "width",
       "type": "select",
-      "label": "Row width",
-      "default": "entry",
+      "label": "Width",
+      "default": "normal",
       "width": "half",
+      "canonicalWidth": true,
       "options": [
-        { "value": "entry", "label": "Reading column" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "normal", "label": "Normal" },
         { "value": "wide", "label": "Wide" },
-        { "value": "page", "label": "Full page width" },
+        { "value": "page", "label": "Page width" },
         { "value": "full", "label": "Edge to edge" }
       ]
     },
@@ -62,7 +64,7 @@
       "label": "Frame shape",
       "default": "4-3",
       "width": "half",
-      "help": "Ignored when fit is Natural or Masonry",
+      "help": "Not used when you have chosen Natural or Masonry above.",
       "options": [
         { "value": "16-9", "label": "Wide 16:9" },
         { "value": "3-2", "label": "Photo 3:2" },
@@ -74,9 +76,9 @@
     },
     { "key": "gap", "type": "select", "label": "Spacing", "default": "normal", "width": "half", "options": [
       { "value": "none", "label": "Flush" },
-      { "value": "tight" },
-      { "value": "normal" },
-      { "value": "loose" }
+      { "value": "tight", "label": "Tight" },
+      { "value": "normal", "label": "Normal" },
+      { "value": "loose", "label": "Roomy" }
     ] },
     { "key": "rounded", "type": "boolean", "label": "Rounded corners", "default": true, "width": "half" },
     { "key": "lightbox", "type": "boolean", "label": "Click to enlarge", "default": true, "width": "half" }
@@ -84,7 +86,7 @@
   "defaults": {
     "images": [],
     "columns": "2",
-    "width": "entry",
+    "width": "normal",
     "fit": "cover",
     "ratio": "4-3",
     "gap": "normal",

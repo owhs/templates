@@ -1,9 +1,9 @@
-{% if props.title %}<h3 style="margin-bottom: 0.8rem">{{ props.title | escape }}</h3>{% endif %}
+{% if props.title %}<h3 style="margin-bottom: 0.8rem"{{ 'title' | wbe }}>{{ props.title | escape }}</h3>{% endif %}
 <div class="wb-spec-table">
   <table>
     <tbody>
       {% for row in props.rows %}
-        <tr><th>{{ row.label | escape }}</th><td>{{ row.value | escape }}</td></tr>
+        <tr><th{{ 'rows' | wbe_at: forloop.index0, 'label' }}>{{ row.label | escape }}</th><td{{ 'rows' | wbe_at: forloop.index0, 'value' }}>{{ row.value | escape }}</td></tr>
       {% endfor %}
     </tbody>
   </table>

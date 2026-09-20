@@ -3,7 +3,7 @@
   "label": "Related products",
   "group": "Strongman",
   "icon": "layers",
-  "description": "Hand-picked cards linking to related lifts — curated by an editor, not auto-generated.",
+  "description": "Cards linking to other lifts. You choose which ones appear — nothing is added for you.",
   "fields": [
     { "key": "title", "type": "text", "label": "Title", "default": "You might also like" },
     {

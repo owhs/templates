@@ -2,16 +2,16 @@
   {% for p in props.items %}
     {% if p.href %}
       <a class="pt-card" href="{{ p.href }}"{% if p.href contains '//' %} target="_blank" rel="noopener"{% endif %}>
-        <span class="pt-role">{{ p.role | escape }}</span>
-        <span class="pt-name">{{ p.name | escape }}</span>
-        {% if p.text %}<span class="pt-text">{{ p.text | escape }}</span>{% endif %}
-        <span class="pt-link">{{ p.linkLabel | default: 'Explore the range →' | escape }}</span>
+        <span class="pt-role"{{ 'items' | wbe_at: forloop.index0, 'role' }}>{{ p.role | escape }}</span>
+        <span class="pt-name"{{ 'items' | wbe_at: forloop.index0, 'name' }}>{{ p.name | escape }}</span>
+        {% if p.text %}<span class="pt-text"{{ 'items' | wbe_at: forloop.index0, 'text' }}>{{ p.text | escape }}</span>{% endif %}
+        <span class="pt-link"{{ 'items' | wbe_at: forloop.index0, 'linkLabel' }}>{{ p.linkLabel | default: 'Explore the range →' | escape }}</span>
       </a>
     {% else %}
       <div class="pt-card">
-        <span class="pt-role">{{ p.role | escape }}</span>
-        <span class="pt-name">{{ p.name | escape }}</span>
-        {% if p.text %}<span class="pt-text">{{ p.text | escape }}</span>{% endif %}
+        <span class="pt-role"{{ 'items' | wbe_at: forloop.index0, 'role' }}>{{ p.role | escape }}</span>
+        <span class="pt-name"{{ 'items' | wbe_at: forloop.index0, 'name' }}>{{ p.name | escape }}</span>
+        {% if p.text %}<span class="pt-text"{{ 'items' | wbe_at: forloop.index0, 'text' }}>{{ p.text | escape }}</span>{% endif %}
       </div>
     {% endif %}
   {% endfor %}

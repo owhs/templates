@@ -1,15 +1,15 @@
 {
   "type": "sectors",
-  "label": "Application strip",
+  "label": "Where it is used",
   "group": "Stratum",
   "icon": "layers",
-  "description": "Where the equipment goes — a ruled strip of sectors with icons.",
+  "description": "Where the equipment is used — a strip of industries, each with its own icon.",
   "fields": [
     { "key": "items", "type": "list", "label": "Sectors", "item": [
       { "key": "icon", "type": "select", "label": "Icon", "default": "building", "options": [
-        { "value": "building" }, { "value": "layers" }, { "value": "electric" }, { "value": "star" },
-        { "value": "users" }, { "value": "globe" }, { "value": "key" }, { "value": "clock" },
-        { "value": "shield" }, { "value": "leaf" }, { "value": "cart" }, { "value": "location" }
+        { "value": "building", "label": "Building" }, { "value": "layers", "label": "Layers" }, { "value": "electric", "label": "Electric" }, { "value": "star", "label": "Star" },
+        { "value": "users", "label": "People" }, { "value": "globe", "label": "Globe" }, { "value": "key", "label": "Key" }, { "value": "clock", "label": "Clock" },
+        { "value": "shield", "label": "Shield" }, { "value": "leaf", "label": "Leaf" }, { "value": "cart", "label": "Trolley" }, { "value": "location", "label": "Map pin" }
       ] },
       { "key": "name", "type": "text", "label": "Sector" },
       { "key": "text", "type": "textarea", "label": "Text", "rows": 2 },

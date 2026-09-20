@@ -3,7 +3,7 @@
   "label": "Spec table",
   "group": "Industrial",
   "icon": "table",
-  "description": "Key-value specification table",
+  "description": "A two-column table of technical figures \u2014 capacity, size, weight.",
   "fields": [
     {
       "key": "title",

@@ -6,7 +6,7 @@
 <article class="content post tpl-project">
   <header class="content__header content__narrow anim-hidden">
     
-    <h1 class="content__title">{{ doc.title | escape }}</h1>
+    <h1 class="content__title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
   </header>
 
   <div class="content__body">

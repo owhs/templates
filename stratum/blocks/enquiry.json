@@ -3,7 +3,7 @@
   "label": "Enquiry band",
   "group": "Stratum",
   "icon": "send",
-  "description": "Closing call to action with the live contact facts from Settings → Brand.",
+  "description": "The closing “get in touch” band, using the contact details from Settings → Brand.",
   "fields": [
     { "key": "eyebrow", "type": "text", "label": "Micro-label" },
     { "key": "title", "type": "text", "label": "Title", "required": true },

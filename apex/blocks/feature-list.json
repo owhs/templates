@@ -3,7 +3,7 @@
   "label": "Feature list",
   "group": "Industrial",
   "icon": "list",
-  "description": "Icon + title + text feature cards in a grid",
+  "description": "A grid of small cards, each with an icon, a title and a line of text.",
   "fields": [
     {
       "key": "items",

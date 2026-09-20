@@ -3,7 +3,7 @@
   "label": "Category nav",
   "group": "Industrial",
   "icon": "layout",
-  "description": "Quick category navigation cards",
+  "description": "Cards that link to the main parts of your site.",
   "fields": [
     {
       "key": "items",

@@ -8,20 +8,23 @@
   next/prev controls step through it rather than treating each shot as an
   island.
 {% endcomment %}
-{% assign w = props.width | default: 'entry' %}
+{% assign w = props.width | default: 'normal' %}
+{% comment %} 'entry' is the old name for the reading column — still stored on live pages. {% endcomment %}
+{% if w == 'entry' %}{% assign w = 'normal' %}{% endif %}
 {% assign cols = props.columns | default: '2' %}
 {% assign fit = props.fit | default: 'cover' %}
 
 {% if w == 'full' %}{% assign wcls = ' grid-full' %}
 {% elsif w == 'page' %}{% assign wcls = ' grid-full is-contained' %}
 {% elsif w == 'wide' %}{% assign wcls = ' grid-wide' %}
+{% elsif w == 'narrow' %}{% assign wcls = ' grid-narrow' %}
 {% else %}{% assign wcls = '' %}{% endif %}
 
 <div class="wb-gallery cols-{{ cols }} fit-{{ fit }} ratio-{{ props.ratio | default: '4-3' }} gap-{{ props.gap | default: 'normal' }}{% unless props.rounded == false %} is-rounded{% endunless %}{{ wcls }}"
      {% if props.lightbox %}data-gallery{% endif %}>
   {% for i in props.images %}
     {% if i.mediaId %}
-      <figure{% if props.lightbox %} data-lightbox="1"{% endif %}>
+      <figure{% if props.lightbox %} data-lightbox="1"{% endif %}{{ 'images' | wbe_at: forloop.index0, 'mediaId', 'img' }}>
         {% if cols == '1' %}
           {{ i.mediaId | img: alt: i.alt, width: 1366, sizes: '(max-width: 640px) 100vw, 90vw' }}
         {% elsif cols == '2' %}
@@ -29,7 +32,7 @@
         {% else %}
           {{ i.mediaId | img: alt: i.alt, width: 768, sizes: '(max-width: 640px) 50vw, 30vw' }}
         {% endif %}
-        {% if i.caption %}<figcaption>{{ i.caption | escape }}</figcaption>{% endif %}
+        {% if i.caption %}<figcaption{{ 'images' | wbe_at: forloop.index0, 'caption' }}>{{ i.caption | escape }}</figcaption>{% endif %}
       </figure>
     {% endif %}
   {% endfor %}

@@ -3,7 +3,7 @@
   "label": "Feature card",
   "group": "Gantry",
   "icon": "star",
-  "description": "Icon + title + text card — an example of a designer-made template block",
+  "description": "A small card with an icon, a title and a line or two of text.",
   "fields": [
     {
       "key": "icon",
@@ -52,7 +52,7 @@
         { "value": "leaf", "label": "leaf" },
         { "value": "gear", "label": "gear" }
       ],
-      "help": "From the site icon set — inline SVG, so it renders identically everywhere"
+      "help": "A name from the site icon set, e.g. star, shield, gear. Leave blank for no icon."
     },
     { "key": "title", "type": "text", "label": "Title", "required": true },
     { "key": "text", "type": "textarea", "label": "Text", "rows": 3 },

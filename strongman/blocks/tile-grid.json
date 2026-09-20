@@ -3,7 +3,7 @@
   "label": "Image tiles",
   "group": "Strongman",
   "icon": "layers",
-  "description": "Wide photo tiles with a frosted panel of copy and a button — the range signposts on the home page.",
+  "description": "Wide photo tiles, each with a few words on a soft panel and a button — the signposts to your ranges on the home page.",
   "fields": [
     {
       "key": "tiles",

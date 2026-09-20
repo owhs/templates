@@ -344,13 +344,24 @@
     box-shadow: none;
     transform: translateX(100%);
     opacity: 1;
-    visibility: visible;
-    transition: transform .3s var(--transition);
+    /* A closed panel must be closed, not merely pushed off to the right: a
+       transformed element still answers hit-tests, still gets read out, and
+       reappears the moment anything neutralises the transform (which is what
+       made ghost panels hang over the hero in the studio's preview frames).
+       visibility carries the closed state; the transform stays for the slide. */
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform .3s var(--transition), visibility 0s linear .3s;
   }
   .nav-item:hover > .drop-panel,
   .nav-item:focus-within > .drop-panel { transform: translateX(100%); }
   .nav-item.drilled > .drop-panel,
-  .nav-item.drilled > .mega-panel { transform: none; }
+  .nav-item.drilled > .mega-panel {
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s, 0s;
+  }
 
   .drill-head {
     display: flex;
@@ -1066,8 +1077,24 @@
   margin-inline: auto;
   padding-inline: var(--page-margin);
 }
-.wb-section > .container.w-normal { max-width: 90rem; }
-.wb-section > .container.w-narrow { max-width: 52rem; }
+/* Each step keeps a slightly wider gutter than the step below it. With one
+   shared gutter, every value above Narrow collapsed onto the same measure as
+   soon as the window was narrower than the cap — at a 1024px frame Normal,
+   Wide, Page width and Edge to edge all came out identical, so choosing
+   between them did nothing visible. At full desktop width the caps still win
+   and the content measures exactly what it did before. */
+.wb-section > .container.w-narrow { width: min(100% - 8rem, 52rem); max-width: none; }
+.wb-section > .container.w-normal { width: min(100% - 6rem, 90rem); max-width: none; }
+.wb-section > .container.w-wide { width: min(100% - 4rem, 96rem); max-width: none; }
+/* Page width keeps the page gutter; edge to edge drops it entirely. */
+.wb-section > .container.w-page { width: calc(100% - 2rem); max-width: var(--page-width); }
+.wb-section > .container.w-full { width: 100%; max-width: none; padding-inline: 0; }
+@media (max-width: 40rem) {
+  .wb-section > .container.w-narrow,
+  .wb-section > .container.w-normal,
+  .wb-section > .container.w-wide,
+  .wb-section > .container.w-page { width: 100%; }
+}
 
 /* --- galleries ------------------------------------------------------------
    Four ways to fill a frame, because photographs of lifts arrive in wildly

@@ -3,7 +3,7 @@
   "label": "Feature card",
   "group": "Aurora",
   "icon": "star",
-  "description": "Icon + title + text card \u2014 an example of a designer-made template block",
+  "description": "A small card with an icon, a title and a line or two of text.",
   "fields": [
     {
       "key": "icon",
@@ -172,7 +172,7 @@
           "label": "gear"
         }
       ],
-      "help": "From the site icon set \u2014 inline SVG, so it renders identically everywhere"
+      "help": "A name from the site icon set, e.g. star, shield, gear. Leave blank for no icon."
     },
     {
       "key": "title",

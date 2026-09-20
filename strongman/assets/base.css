@@ -257,3 +257,59 @@ main { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .reveal-on .anim-hidden { opacity: 1; transform: none; }
 }
+
+/* === One width model =======================================================
+   Five widths, the same five everywhere: Narrow, Normal, Wide, Page width and
+   Edge to edge. The engine puts `.bh-w-<value>` on any block sitting directly
+   on the page. Here they map onto the named content grid above rather than onto
+   max-widths, so a wide block claims the wide track instead of fighting it.
+
+   Each rule is duplicated one level through `[data-wb-region] >` for the same
+   reason the rules above are — see the comment at the content grid. */
+/* Narrow sits inside the entry track, so a cap of 52rem (832px) was wider than
+   the entry column itself (74ch ≈ 710px) and Narrow rendered identically to
+   Normal. Capping it as a share of the entry column keeps it a genuinely
+   shorter measure at every window size. */
+.content__body > .bh-w-narrow,
+.content__body > [data-wb-region] > .bh-w-narrow {
+  grid-column: entry;
+  max-width: min(52rem, 86%);
+  justify-self: center;
+  width: 100%;
+}
+.content__body > .bh-w-normal,
+.content__body > [data-wb-region] > .bh-w-normal { grid-column: entry; }
+.content__body > .bh-w-wide,
+.content__body > [data-wb-region] > .bh-w-wide { grid-column: wide; }
+/* Page width used to claim the full track and hold its margin as padding, so
+   the element box measured exactly the same as Edge to edge. Inset the box
+   itself instead — same visual result, and the two are now distinguishable. */
+.content__body > .bh-w-page,
+.content__body > [data-wb-region] > .bh-w-page {
+  grid-column: full;
+  justify-self: center;
+  width: calc(100% - var(--page-margin) * 2);
+  max-width: var(--page-width);
+}
+.content__body > .bh-w-full,
+.content__body > [data-wb-region] > .bh-w-full { grid-column: full; }
+
+/* A narrow photo row keeps the reading column but centres a shorter measure. */
+.content__body > .grid-narrow,
+.content__body > [data-wb-region] > .grid-narrow {
+  grid-column: entry;
+  max-width: 52rem;
+  justify-self: center;
+  width: 100%;
+}
+
+/* Outside the content grid (a block inside a Section, say) fall back to
+   plain centred measures so the same class still means the same thing. */
+.bh-w-narrow { max-width: min(38rem, 88%); margin-inline: auto; }
+.bh-w-normal { max-width: var(--entry-width); margin-inline: auto; }
+.bh-w-wide { max-width: 90rem; width: calc(100% - 3rem); margin-inline: auto; }
+.bh-w-page { max-width: var(--page-width); width: calc(100% - 1.5rem); margin-inline: auto; }
+.bh-w-full { max-width: none; }
+@media (max-width: 40rem) {
+  .bh-w-narrow, .bh-w-normal, .bh-w-wide, .bh-w-page { max-width: none; width: calc(100% - 2rem); }
+}

@@ -10,7 +10,7 @@
       {% for s in props.slides %}
         <div class="hero__slide{% if forloop.first %} is-active{% endif %}"{% unless forloop.first %} aria-hidden="true"{% endunless %}>
           {% if s.image %}
-            <figure class="hero__image">
+            <figure class="hero__image"{{ 'slides' | wbe_at: forloop.index0, 'image', 'img' }}>
               {% if forloop.first %}
                 {{ s.image | img: priority: true, width: 1984, sizes: '100vw' }}
               {% else %}
@@ -20,8 +20,8 @@
           {% endif %}
           {% if s.heading or s.caption %}
             <div class="hero__content">
-              {% if s.heading %}<h2>{{ s.heading | escape }}</h2>{% endif %}
-              {% if s.caption %}{{ s.caption | md }}{% endif %}
+              {% if s.heading %}<h2{{ 'slides' | wbe_at: forloop.index0, 'heading' }}>{{ s.heading | escape }}</h2>{% endif %}
+              {% if s.caption %}<div{{ 'slides' | wbe_at: forloop.index0, 'caption', 'md' }}>{{ s.caption | md }}</div>{% endif %}
             </div>
           {% endif %}
         </div>

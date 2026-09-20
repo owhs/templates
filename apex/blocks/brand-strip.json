@@ -3,7 +3,7 @@
   "label": "Brand strip",
   "group": "Industrial",
   "icon": "building",
-  "description": "Partner brand logos/descriptions in a horizontal strip",
+  "description": "A row of the brands you work with, each with a short line of text.",
   "fields": [
     {
       "key": "items",

@@ -5,8 +5,8 @@
 {% endcomment %}
 <article class="content post">
   <header class="content__header content__narrow anim-hidden">
-    <h1 class="content__title">{{ doc.title | escape }}</h1>
-    {% if fields.lede %}<p class="content__lede">{{ fields.lede | escape }}</p>{% endif %}
+    <h1 class="content__title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+    {% if fields.lede %}<p class="content__lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
   </header>
 
   <div class="content__body">

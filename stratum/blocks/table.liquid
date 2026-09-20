@@ -7,7 +7,7 @@
 <div class="wb-table{% if props.striped %} striped{% endif %}{% if props.compact %} compact{% endif %} m-{{ props.mobile | default: 'scroll' }}"
      data-table-mobile="{{ props.mobile | default: 'scroll' }}">
   <table>
-    {% if props.caption %}<caption>{{ props.caption | escape }}</caption>{% endif %}
+    {% if props.caption %}<caption{{ 'caption' | wbe }}>{{ props.caption | escape }}</caption>{% endif %}
     {% if props.headerRow %}
       <thead><tr>{% for c in head %}<th scope="col">{{ c | md | replace: '<p>', '' | replace: '</p>', '' }}</th>{% endfor %}</tr></thead>
     {% endif %}

@@ -3,12 +3,12 @@
   "label": "System cards",
   "group": "Stratum",
   "icon": "layout",
-  "description": "Hand-picked equipment cards: schematic, code chip, two headline specs and a link.",
+  "description": "Cards you choose yourself, each with a drawing, a model code, two headline figures and a link.",
   "fields": [
-    { "key": "cols", "type": "select", "label": "Columns", "options": [{ "value": "2" }, { "value": "3" }, { "value": "4" }], "default": "3", "width": "half" },
+    { "key": "cols", "type": "select", "label": "Columns", "options": [{ "value": "2", "label": "Two" }, { "value": "3", "label": "Three" }, { "value": "4", "label": "Four" }], "default": "3", "width": "half" },
     { "key": "items", "type": "list", "label": "Systems", "item": [
       { "key": "name", "type": "text", "label": "Name" },
-      { "key": "code", "type": "text", "label": "Code chip", "help": "e.g. TP · SP · PUZZLELIFT" },
+      { "key": "code", "type": "text", "label": "Short code", "help": "The model code shown in a small tag on the card, e.g. TP, SP, PUZZLELIFT." },
       { "key": "brand", "type": "text", "label": "Brand" },
       { "key": "text", "type": "textarea", "label": "One-liner", "rows": 2 },
       { "key": "image", "type": "image", "label": "Schematic" },

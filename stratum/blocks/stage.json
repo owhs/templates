@@ -1,15 +1,15 @@
 {
   "type": "stage",
-  "label": "Stage (cinematic hero)",
+  "label": "Opening banner",
   "group": "Stratum",
   "icon": "mountain",
-  "description": "Full-bleed dark opening plate: micro-label, oversized headline, schematic artwork and a key-figure strip.",
+  "description": "A dark opening banner across the full width: a small label, a very large headline, a drawing and a strip of headline numbers.",
   "fields": [
     {
       "key": "eyebrow",
       "type": "text",
       "label": "Micro-label",
-      "help": "Small mono label above the headline"
+      "help": "A short line above the headline."
     },
     {
       "key": "title",
@@ -21,7 +21,7 @@
       "key": "titleThin",
       "type": "text",
       "label": "Headline — second line",
-      "help": "Rendered lighter, under the headline"
+      "help": "Shown in a lighter weight, under the first line."
     },
     {
       "key": "text",
@@ -33,19 +33,15 @@
       "key": "image",
       "type": "image",
       "label": "Artwork",
-      "help": "A system schematic reads best here"
+      "help": "A technical drawing works better here than a photo."
     },
     {
       "key": "layout",
       "type": "select",
       "label": "Layout",
       "options": [
-        {
-          "value": "split"
-        },
-        {
-          "value": "center"
-        }
+        { "value": "split", "label": "Text beside the artwork" },
+        { "value": "center", "label": "Centred" }
       ],
       "default": "split",
       "width": "half"
@@ -55,12 +51,8 @@
       "type": "select",
       "label": "Height",
       "options": [
-        {
-          "value": "normal"
-        },
-        {
-          "value": "tall"
-        }
+        { "value": "normal", "label": "Normal" },
+        { "value": "tall", "label": "Tall" }
       ],
       "default": "normal",
       "width": "half"
@@ -91,12 +83,8 @@
           "type": "select",
           "label": "Style",
           "options": [
-            {
-              "value": "primary"
-            },
-            {
-              "value": "ghost"
-            }
+            { "value": "primary", "label": "Solid (main action)" },
+            { "value": "ghost", "label": "Outlined" }
           ],
           "default": "primary"
         }

@@ -3,7 +3,7 @@
   "label": "Product grid",
   "group": "Industrial",
   "icon": "columns",
-  "description": "Grid of product cards with brand, title, tagline and key specs",
+  "description": "A grid of product cards showing the brand, name and headline figures.",
   "fields": [
     {
       "key": "title",

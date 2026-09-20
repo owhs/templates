@@ -3,7 +3,7 @@
   "label": "Specification table",
   "group": "Stratum",
   "icon": "table",
-  "description": "Ruled label/value data sheet — the technical body of a product page.",
+  "description": "A list of figures, each with its own name beside it — the technical detail of a product page.",
   "fields": [
     { "key": "title", "type": "text", "label": "Title" },
     { "key": "note", "type": "text", "label": "Footnote", "help": "e.g. 'Indicative figures — confirmed at survey.'" },

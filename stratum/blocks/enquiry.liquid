@@ -1,11 +1,11 @@
 <div class="sb-enquiry">
   <div class="enq-copy">
-    {% if props.eyebrow %}<p class="eyebrow">{{ props.eyebrow | escape }}</p>{% endif %}
-    <h2>{{ props.title | escape }}</h2>
-    {% if props.text %}<p>{{ props.text | escape }}</p>{% endif %}
+    {% if props.eyebrow %}<p class="eyebrow"{{ 'eyebrow' | wbe }}>{{ props.eyebrow | escape }}</p>{% endif %}
+    <h2{{ 'title' | wbe }}>{{ props.title | escape }}</h2>
+    {% if props.text %}<p{{ 'text' | wbe }}>{{ props.text | escape }}</p>{% endif %}
     <p class="enq-actions">
-      <a class="btn btn-primary btn-large" href="{{ props.primaryHref | default: '/contact' }}">{{ props.primaryLabel | default: 'Request a quote' | escape }}</a>
-      {% if props.secondaryLabel %}<a class="btn btn-ghost btn-large" href="{{ props.secondaryHref | default: '/systems' }}">{{ props.secondaryLabel | escape }}</a>{% endif %}
+      <a class="btn btn-primary btn-large" href="{{ props.primaryHref | default: '/contact' }}"><span{{ 'primaryLabel' | wbe }}>{{ props.primaryLabel | default: 'Request a quote' | escape }}</span></a>
+      {% if props.secondaryLabel %}<a class="btn btn-ghost btn-large" href="{{ props.secondaryHref | default: '/systems' }}"><span{{ 'secondaryLabel' | wbe }}>{{ props.secondaryLabel | escape }}</span></a>{% endif %}
     </p>
   </div>
   <div class="enq-facts">

@@ -11,19 +11,19 @@
 {% endcomment %}
 <div class="spec-block">
   {% if props.title %}
-    <h3 class="spec-title">{% if props.icon %}<span class="spec-title__icon">{{ props.icon | icon: 15 }}</span>{% endif %}{{ props.title | escape }}</h3>
+    <h3 class="spec-title">{% if props.icon %}<span class="spec-title__icon">{{ props.icon | icon: 15 }}</span>{% endif %}<span{{ 'title' | wbe }}>{{ props.title | escape }}</span></h3>
   {% endif %}
 
   <table class="spec-table">
     <tbody>
       {% for r in props.rows %}
         <tr class="spec-row">
-          <th scope="row">{{ r.label | escape }}</th>
-          <td><span class="spec-val">{{ r.value | escape }}</span>{% if r.note %}<span class="spec-sub">{{ r.note | escape }}</span>{% endif %}</td>
+          <th scope="row"{{ 'rows' | wbe_at: forloop.index0, 'label' }}>{{ r.label | escape }}</th>
+          <td><span class="spec-val"{{ 'rows' | wbe_at: forloop.index0, 'value' }}>{{ r.value | escape }}</span>{% if r.note %}<span class="spec-sub"{{ 'rows' | wbe_at: forloop.index0, 'note' }}>{{ r.note | escape }}</span>{% endif %}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  {% if props.note %}<p class="spec-note">{{ props.note | escape }}</p>{% endif %}
+  {% if props.note %}<p class="spec-note"{{ 'note' | wbe }}>{{ props.note | escape }}</p>{% endif %}
 </div>

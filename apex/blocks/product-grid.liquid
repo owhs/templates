@@ -1,7 +1,7 @@
 {% if props.title or props.eyebrow %}
 <div class="container" style="margin-bottom: 1.5rem">
-  {% if props.eyebrow %}<p class="eyebrow">{{ props.eyebrow | escape }}</p>{% endif %}
-  {% if props.title %}<h2>{{ props.title | escape }}</h2>{% endif %}
+  {% if props.eyebrow %}<p class="eyebrow"{{ 'eyebrow' | wbe }}>{{ props.eyebrow | escape }}</p>{% endif %}
+  {% if props.title %}<h2{{ 'title' | wbe }}>{{ props.title | escape }}</h2>{% endif %}
 </div>
 {% endif %}
 <div class="container">
@@ -176,13 +176,13 @@
           {% endif %}
         </div>
         <div class="product-card-body">
-          {% if item.brand %}<span class="product-card-brand">{{ item.brand | escape }}</span>{% endif %}
-          <h3>{{ item.title | escape }}</h3>
-          {% if item.tagline %}<p class="product-card-tagline">{{ item.tagline | escape }}</p>{% endif %}
+          {% if item.brand %}<span class="product-card-brand"{{ 'items' | wbe_at: forloop.index0, 'brand' }}>{{ item.brand | escape }}</span>{% endif %}
+          <h3{{ 'items' | wbe_at: forloop.index0, 'title' }}>{{ item.title | escape }}</h3>
+          {% if item.tagline %}<p class="product-card-tagline"{{ 'items' | wbe_at: forloop.index0, 'tagline' }}>{{ item.tagline | escape }}</p>{% endif %}
           {% if item.spec1 or item.spec2 %}
           <div class="product-card-specs">
-            {% if item.spec1 %}<span>{{ item.spec1 | escape }}</span>{% endif %}
-            {% if item.spec2 %}<span>{{ item.spec2 | escape }}</span>{% endif %}
+            {% if item.spec1 %}<span{{ 'items' | wbe_at: forloop.index0, 'spec1' }}>{{ item.spec1 | escape }}</span>{% endif %}
+            {% if item.spec2 %}<span{{ 'items' | wbe_at: forloop.index0, 'spec2' }}>{{ item.spec2 | escape }}</span>{% endif %}
           </div>
           {% endif %}
           {% if item.link.href %}<span class="product-card-more">View product &rarr;</span>{% endif %}

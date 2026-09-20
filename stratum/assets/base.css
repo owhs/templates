@@ -582,3 +582,31 @@ body[data-nav-veil="all"] > main, body[data-nav-veil="all"] > .site-footer { fil
   .footer-social .wb-richtext p { margin: 0; display: flex; gap: 1.1rem; flex-wrap: wrap; }
   .footer-social a { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.16em; text-transform: uppercase; }
 }
+
+/* === One width model =======================================================
+   Five widths, the same five everywhere: Narrow, Normal, Wide, Page width and
+   Edge to edge. The engine puts `.bh-w-<value>` on any block sitting directly
+   on the page; Section puts `w-<value>` on its own container. Unlayered on
+   purpose, so a width the author picked wins over the template's defaults. */
+/* Each step down the ladder keeps a slightly wider gutter than the step below
+   it, so the five widths stay visibly different even when the window is
+   narrower than the template's container (a 1024px editor frame, a laptop) —
+   where a single shared gutter used to collapse Normal, Wide and Page width
+   onto the same measure. Under 40rem they all go to one phone gutter. */
+.bh-w-narrow { width: min(100% - 8rem, 52rem); max-width: none; margin-inline: auto; }
+.bh-w-normal { width: min(100% - 6rem, var(--container)); max-width: none; margin-inline: auto; }
+.bh-w-wide   { width: min(100% - 4rem, min(96rem, calc(var(--container) + 12rem))); max-width: none; margin-inline: auto; }
+.bh-w-page   { width: calc(100% - 2rem); max-width: none; margin-inline: auto; }
+.bh-w-full   { width: 100%; max-width: none; margin-inline: 0; }
+@media (max-width: 40rem) {
+  .bh-w-narrow, .bh-w-normal, .bh-w-wide, .bh-w-page { width: calc(100% - 2rem); }
+}
+
+.container.w-narrow { width: min(100% - 8rem, 52rem); max-width: none; }
+.container.w-normal { width: min(100% - 6rem, var(--container)); max-width: none; }
+.container.w-wide { width: min(100% - 4rem, var(--container)); max-width: none; }
+.container.w-page { width: calc(100% - 2rem); max-width: none; }
+@media (max-width: 40rem) {
+  .container.w-narrow, .container.w-normal,
+  .container.w-wide, .container.w-page { width: calc(100% - 2rem); }
+}

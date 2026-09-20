@@ -6,8 +6,8 @@
           <a href="/sectors">Sector guides</a> <span aria-hidden="true">/</span>
           <span>{{ doc.title | escape }}</span>
         </p>
-        <h1 class="pdp-title">{{ doc.title | escape }}</h1>
-        {% if fields.lede %}<p class="pdp-lede">{{ fields.lede | escape }}</p>{% endif %}
+        <h1 class="pdp-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+        {% if fields.lede %}<p class="pdp-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
         {% if fields.constraint %}
           <p class="sector-constraint"><span class="sc-k">The constraint</span>{{ fields.constraint | escape }}</p>
         {% endif %}
