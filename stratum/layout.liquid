@@ -167,6 +167,143 @@
       })
     })();
 
+    /* ---- hero slider -----------------------------------------------------
+       Stacked slides, cross-faded. Autoplay yields while the tab is hidden
+       and never starts at all for a visitor who asked for reduced motion.
+       Deliberately no pause-on-hover: the hero fills the top of the page, so
+       a cursor merely resting there would stop the rotation for good and the
+       slider would look broken. With no JS the first slide simply shows. */
+    (function () {
+      document.querySelectorAll('[data-hero-slider]').forEach(function (hero) {
+        var slides = [].slice.call(hero.querySelectorAll('.sm-hero-slide'))
+        if (!slides.length) return
+        if (slides.length < 2) { slides[0].classList.add('is-active'); return }
+
+        var dots = [].slice.call(hero.querySelectorAll('.sm-hero-dots button'))
+        var interval = parseInt(hero.dataset.heroInterval, 10) || 6000
+        var i = 0, paused = false
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        function show(n) {
+          i = (n + slides.length) % slides.length
+          slides.forEach(function (s, x) {
+            s.classList.toggle('is-active', x === i)
+            if (x === i) s.removeAttribute('aria-hidden'); else s.setAttribute('aria-hidden', 'true')
+          })
+          dots.forEach(function (d, x) { d.setAttribute('aria-current', String(x === i)) })
+        }
+        dots.forEach(function (d, x) { d.addEventListener('click', function () { show(x) }) })
+        document.addEventListener('visibilitychange', function () { paused = document.hidden })
+
+        /* Drag / swipe. The slides cross-fade rather than slide, so the gesture
+           is read and committed on release instead of tracking the pointer —
+           there is nothing to move under the finger. */
+        var view = hero.querySelector('.sm-hero-view') || hero
+        var startX = 0, startY = 0, dragging = false, decided = false
+
+        /* Pressing an <img> starts the browser's own image drag, which
+           swallows the pointerup that would end the gesture — and with it the
+           clearing of `paused`, which is how autoplay silently dies. */
+        view.addEventListener('dragstart', function (e) { e.preventDefault() })
+        view.addEventListener('pointerdown', function (e) {
+          if (e.button !== undefined && e.button !== 0) return
+          startX = e.clientX; startY = e.clientY
+          dragging = true; decided = false; paused = true
+          try { view.setPointerCapture(e.pointerId) } catch (err) {}
+        })
+        view.addEventListener('pointermove', function (e) {
+          if (!dragging || decided) return
+          var dx = e.clientX - startX, dy = e.clientY - startY
+          if (Math.abs(dy) > Math.abs(dx)) { dragging = false; paused = false; return }
+          if (Math.abs(dx) > 12) { decided = true; view.classList.add('is-dragging') }
+        })
+        function endDrag(e) {
+          view.classList.remove('is-dragging')
+          if (!dragging) { paused = false; return }
+          var dx = ((e && e.clientX) || startX) - startX
+          dragging = false
+          if (Math.abs(dx) > 60) show(dx < 0 ? i + 1 : i - 1)
+          paused = false
+        }
+        view.addEventListener('pointerup', endDrag)
+        view.addEventListener('pointercancel', endDrag)
+        addEventListener('pointerup', endDrag)
+        addEventListener('blur', function () { dragging = false; paused = false })
+        view.addEventListener('click', function (e) {
+          if (decided) { e.preventDefault(); e.stopPropagation(); decided = false }
+        }, true)
+
+        show(0)
+        if (!still) setInterval(function () { if (!paused) show(i + 1) }, interval)
+      })
+    })();
+
+    /* ---- gallery lightbox ------------------------------------------------
+       A row of photographs wants to be walked through, so a [data-gallery] row
+       opens as one set with next/prev, arrow keys, a counter and the caption.
+       Capture phase plus stopPropagation keeps the runtime's own one-shot
+       viewer from firing on the same click. */
+    document.addEventListener('click', function (e) {
+      var fig = e.target.closest && e.target.closest('[data-gallery] [data-lightbox]')
+      if (!fig) return
+      e.preventDefault()
+      e.stopPropagation()
+
+      var figures = [].slice.call(fig.closest('[data-gallery]').querySelectorAll('[data-lightbox]'))
+      var at = figures.indexOf(fig)
+      var many = figures.length > 1
+
+      var box = document.createElement('div')
+      box.className = 'lightbox-overlay is-gallery'
+      box.setAttribute('role', 'dialog')
+      box.setAttribute('aria-modal', 'true')
+      box.setAttribute('aria-label', 'Image viewer')
+      box.innerHTML =
+        '<button class="lb-close" type="button" aria-label="Close">&times;</button>' +
+        '<button class="lb-prev" type="button" aria-label="Previous image">&#8249;</button>' +
+        '<figure class="lb-stage"><img alt=""><figcaption></figcaption></figure>' +
+        '<button class="lb-next" type="button" aria-label="Next image">&#8250;</button>' +
+        '<p class="lb-count" aria-live="polite"></p>'
+
+      var img = box.querySelector('img')
+      var cap = box.querySelector('figcaption')
+      var count = box.querySelector('.lb-count')
+      box.querySelector('.lb-prev').hidden = !many
+      box.querySelector('.lb-next').hidden = !many
+
+      function show(n) {
+        at = (n + figures.length) % figures.length
+        var src = figures[at].querySelector('img')
+        if (!src) return
+        img.src = src.currentSrc || src.src
+        img.alt = src.alt || ''
+        var c = figures[at].querySelector('figcaption')
+        cap.textContent = c ? c.textContent : ''
+        cap.hidden = !cap.textContent
+        count.textContent = many ? (at + 1) + ' / ' + figures.length : ''
+      }
+      function close() {
+        box.remove()
+        document.removeEventListener('keydown', onKey)
+        document.body.style.overflow = ''
+      }
+      function onKey(ev) {
+        if (ev.key === 'Escape') close()
+        else if (ev.key === 'ArrowRight' && many) show(at + 1)
+        else if (ev.key === 'ArrowLeft' && many) show(at - 1)
+      }
+      box.querySelector('.lb-close').addEventListener('click', close)
+      box.querySelector('.lb-prev').addEventListener('click', function (ev) { ev.stopPropagation(); show(at - 1) })
+      box.querySelector('.lb-next').addEventListener('click', function (ev) { ev.stopPropagation(); show(at + 1) })
+      box.addEventListener('click', function (ev) { if (ev.target === box) close() })
+      document.addEventListener('keydown', onKey)
+
+      show(at)
+      document.body.style.overflow = 'hidden'
+      document.body.appendChild(box)
+      box.querySelector('.lb-close').focus()
+    }, true);
+
     /* ---- text size ------------------------------------------------------ */
     (function () {
       var root = document.documentElement

@@ -1,0 +1,10 @@
+{% comment %}
+  The quick list of models at the top of a range page. Stratum draws these as
+  the catalogue chips the list template already uses — mono, uppercase, square,
+  hairline box that fills with the accent on hover.
+{% endcomment %}
+<nav class="sm-linkrow align-{{ props.align | default: 'center' }}" aria-label="Models in this range">
+  {% for l in props.links %}
+    <a class="cat-chip" href="{{ l.href }}"{% if l.title %} title="{{ l.title | escape }}"{% endif %}><span{{ 'links' | wbe_at: forloop.index0, 'label' }}>{{ l.label | escape }}</span></a>
+  {% endfor %}
+</nav>

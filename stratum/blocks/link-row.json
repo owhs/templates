@@ -1,0 +1,28 @@
+{
+  "type": "link-row",
+  "label": "Link row",
+  "group": "Strongman",
+  "icon": "link",
+  "description": "A centred row of small rounded buttons — the quick list of models at the top of a range page.",
+  "fields": [
+    {
+      "key": "links",
+      "type": "list",
+      "label": "Links",
+      "item": [
+        { "key": "label", "type": "text", "label": "Label" },
+        { "key": "href", "type": "text", "label": "Link" },
+        { "key": "title", "type": "text", "label": "Hover text" }
+      ]
+    },
+    {
+      "key": "align",
+      "type": "select",
+      "label": "Alignment",
+      "default": "center",
+      "width": "half",
+      "options": [{ "value": "center", "label": "Centred" }, { "value": "left", "label": "Left" }]
+    }
+  ],
+  "defaults": { "links": [], "align": "center" }
+}

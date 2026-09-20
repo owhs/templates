@@ -1,23 +1,40 @@
 {% comment %}
-  Product data sheet. fields: code · brand · category · tagline · cover ·
-  keySpecs[] · features[] · datasheet · capacity/liftingHeight/drive…
+  Product data sheet — field-tolerant, because two very different catalogues
+  use it.
+
+  A parking-systems catalogue stores: code · brand · category · tagline ·
+  series · cover · keySpecs[] · features[] · datasheet.
+  A lift catalogue stores: name · strapline · range · cover · lede, and puts
+  its specification sheet in a `sidebar` region with related products in a
+  `related` region.
+
+  Nothing here is required. Every line is behind the field that feeds it, the
+  breadcrumb is built from the concept's own index rather than a hard-coded
+  path, and the sidebar/related columns only exist when the document actually
+  has those regions — so a catalogue that uses neither gets the single-column
+  sheet it had before.
 {% endcomment %}
-{% include 'partials/cat' %}
+{% if fields.category %}{% include 'partials/cat' %}{% endif %}
+{% assign sub_line = fields.tagline | default: fields.strapline %}
+{% assign index_path = concept.indexPath | default: '/systems' %}
+{% assign index_label = concept.labelPlural | default: concept.label | default: 'Systems' %}
 <article class="tpl-product">
 
   <header class="pdp-head">
     <div class="pdp-inner">
       <div class="pdp-copy">
         <p class="pdp-crumb">
-          <a href="/systems">Systems</a> <span aria-hidden="true">/</span>
-          <span>{{ cat_label }}</span>
+          <a href="{{ index_path }}">{{ index_label | escape }}</a>
+          {% if fields.category %}<span aria-hidden="true">/</span>
+          <span>{{ cat_label }}</span>{% endif %}
           {% if fields.brand %}<span aria-hidden="true">/</span> <span{{ 'brand' | wbf }}>{{ fields.brand | upcase }}</span>{% endif %}
         </p>
         {% if fields.code %}<p class="pdp-codeline"><span class="pdp-code"{{ 'code' | wbf }}>{{ fields.code }}</span> <span class="pdp-series">{{ fields.series }} series</span></p>{% endif %}
         <h1 class="pdp-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
-        {% if fields.tagline %}<p class="pdp-lede"{{ 'tagline' | wbf }}>{{ fields.tagline | escape }}</p>{% endif %}
+        {% if sub_line %}<p class="pdp-lede"{% if fields.tagline %}{{ 'tagline' | wbf }}{% else %}{{ 'strapline' | wbf }}{% endif %}>{{ sub_line | escape }}</p>{% endif %}
+        {% if fields.lede %}<p class="pdp-intro"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
         <p class="pdp-actions">
-          <a class="btn btn-primary" href="{{ site.vars.quoteHref | default: '/contact' }}">Request a quote</a>
+          <a class="btn btn-primary" href="{{ site.vars.quoteHref | default: site.vars.ctaHref | default: '/contact' }}">{{ site.vars.quoteLabel | default: site.vars.ctaLabel | default: 'Request a quote' }}</a>
           {% if fields.datasheet.href %}<a class="btn btn-ghost" href="{{ fields.datasheet.href }}">Data sheet</a>{% endif %}
         </p>
       </div>
@@ -57,7 +74,25 @@
     </section>
   {% endif %}
 
-  {% region 'content' %}
+  {% if doc.regions.sidebar %}
+    {% comment %}
+      Specification sheet beside the story rather than after it: the reader
+      never has to scroll away from the numbers to keep reading. Below 1000px
+      the sidebar simply falls under the main column.
+    {% endcomment %}
+    <div class="pdp-split">
+      <div class="pdp-main">{% region 'content' %}</div>
+      <aside class="pdp-side">{% region 'sidebar' %}</aside>
+    </div>
+  {% else %}
+    {% region 'content' %}
+  {% endif %}
+
+  {% if doc.regions.related %}
+    <section class="wb-section pad-normal pdp-related">
+      <div class="container w-normal">{% region 'related' %}</div>
+    </section>
+  {% endif %}
 
   <section class="wb-section pad-normal bg-subtle">
     <div class="container w-normal">
@@ -67,8 +102,8 @@
           <p>Send us the bay dimensions, headroom and the number of spaces you need. We will come back with a layout, a capacity figure and a budget cost.</p>
         </div>
         <div class="cta-actions">
-          <a class="btn btn-primary btn-large" href="{{ site.vars.quoteHref | default: '/contact' }}">Request a quote</a>
-          <a class="btn btn-ghost btn-large" href="/systems">All systems</a>
+          <a class="btn btn-primary btn-large" href="{{ site.vars.quoteHref | default: site.vars.ctaHref | default: '/contact' }}">{{ site.vars.quoteLabel | default: site.vars.ctaLabel | default: 'Request a quote' }}</a>
+          <a class="btn btn-ghost btn-large" href="{{ index_path }}">All {{ index_label | downcase | escape }}</a>
         </div>
       </div>
     </div>

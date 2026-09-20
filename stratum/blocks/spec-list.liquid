@@ -1,0 +1,25 @@
+{% comment %}
+  Specification data, in stratum's data-sheet treatment — the same definition
+  list, mono labels and hairline rows that the native `spec-table` block uses,
+  so a page mixing the two reads as one sheet.
+
+  A row is label · value · optional note. The note is a muted second line under
+  the value, the right home for qualifiers like "7050 lb"; the brackets are
+  drawn by CSS so the stored data stays clean.
+{% endcomment %}
+<div class="sm-specs sb-spec">
+  {% if props.title %}
+    <h3 class="spec-title">{% if props.icon %}<span class="sm-specs-ico">{{ props.icon | icon: 15 }}</span>{% endif %}<span{{ 'title' | wbe }}>{{ props.title | escape }}</span></h3>
+  {% endif %}
+
+  <dl class="spec-list">
+    {% for r in props.rows %}
+      <div class="spec-row">
+        <dt{{ 'rows' | wbe_at: forloop.index0, 'label' }}>{{ r.label | escape }}</dt>
+        <dd><span class="sm-spec-v"{{ 'rows' | wbe_at: forloop.index0, 'value' }}>{{ r.value | escape }}</span>{% if r.note %}<span class="sm-spec-sub"{{ 'rows' | wbe_at: forloop.index0, 'note' }}>{{ r.note | escape }}</span>{% endif %}</dd>
+      </div>
+    {% endfor %}
+  </dl>
+
+  {% if props.note %}<p class="spec-note"{{ 'note' | wbe }}>{{ props.note | escape }}</p>{% endif %}
+</div>

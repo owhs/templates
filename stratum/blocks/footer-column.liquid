@@ -1,0 +1,13 @@
+{% comment %}
+  One heading plus a list of links, sitting in the footer's `footer.columns`
+  slot. Up to three of these make the footer's link deck; the heading takes the
+  same mono micro-label stratum uses for every column head in the footer.
+{% endcomment %}
+<div class="sm-footcol">
+  {% if props.title %}<h3 class="sm-footcol-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h3>{% endif %}
+  <ul class="sm-footcol-links">
+    {% for l in props.links %}
+      <li><a href="{{ l.href }}"{% if l.title %} title="{{ l.title | escape }}"{% endif %}><span{{ 'links' | wbe_at: forloop.index0, 'label' }}>{{ l.label | escape }}</span></a></li>
+    {% endfor %}
+  </ul>
+</div>

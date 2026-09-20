@@ -1,0 +1,23 @@
+{
+  "type": "related-products",
+  "label": "Related products",
+  "group": "Strongman",
+  "icon": "layers",
+  "description": "Cards linking to other lifts. You choose which ones appear — nothing is added for you.",
+  "fields": [
+    { "key": "title", "type": "text", "label": "Title", "default": "You might also like" },
+    {
+      "key": "items",
+      "type": "list",
+      "label": "Products",
+      "item": [
+        { "key": "image", "type": "image", "label": "Cover image" },
+        { "key": "name", "type": "text", "label": "Name" },
+        { "key": "strapline", "type": "text", "label": "Strapline" },
+        { "key": "reason", "type": "text", "label": "Why it's related", "help": "Short phrase, e.g. “Same footprint, taller lift”" },
+        { "key": "href", "type": "text", "label": "Link", "help": "e.g. /glenfinnan/" }
+      ]
+    }
+  ],
+  "defaults": { "items": [] }
+}

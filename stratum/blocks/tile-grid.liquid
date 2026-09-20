@@ -1,0 +1,24 @@
+{% comment %}
+  Wide photo tiles — the signposts to the ranges on the home page.
+
+  Stratum reads a tile as a dark plate with the photograph behind it: the copy
+  sits on the plate (so `.on-plate` re-points the ink tokens and the button
+  picks up the plate palette automatically) and the image is the ground it is
+  stamped on. Square corners, mono button, hairline frame.
+{% endcomment %}
+<div class="sm-tiles cols-{{ props.columns | default: '1' }}">
+  {% for t in props.tiles %}
+    <article class="sm-tile on-plate">
+      {% if t.image %}
+        <figure class="sm-tile-media"{{ 'tiles' | wbe_at: forloop.index0, 'image', 'img' }}>{{ t.image | img: width: 1600, sizes: '(max-width: 768px) 100vw, 90vw' }}</figure>
+      {% endif %}
+      <div class="sm-tile-body">
+        {% if t.title %}<h3 class="sm-tile-title"{{ 'tiles' | wbe_at: forloop.index0, 'title' }}>{{ t.title | escape }}</h3>{% endif %}
+        {% if t.text %}<div class="sm-tile-text"{{ 'tiles' | wbe_at: forloop.index0, 'text', 'md' }}>{{ t.text | md }}</div>{% endif %}
+        {% if t.buttonHref.href %}
+          <p class="sm-tile-act"><a href="{{ t.buttonHref.href }}" class="btn btn-primary"><span{{ 'tiles' | wbe_at: forloop.index0, 'buttonLabel' }}>{{ t.buttonLabel | default: 'View Range' | escape }}</span></a></p>
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
+</div>

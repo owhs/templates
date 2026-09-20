@@ -1,0 +1,21 @@
+{
+  "type": "footer-column",
+  "label": "Footer column",
+  "group": "Strongman",
+  "icon": "list",
+  "description": "One heading plus a list of links. Put up to three of these in the footer, one per column.",
+  "fields": [
+    { "key": "title", "type": "text", "label": "Heading" },
+    {
+      "key": "links",
+      "type": "list",
+      "label": "Links",
+      "item": [
+        { "key": "label", "type": "text", "label": "Label" },
+        { "key": "href", "type": "text", "label": "URL" },
+        { "key": "title", "type": "text", "label": "Hover text", "help": "Optional. Shown when someone hovers the link." }
+      ]
+    }
+  ],
+  "defaults": { "links": [] }
+}

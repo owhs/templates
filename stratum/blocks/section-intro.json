@@ -1,0 +1,14 @@
+{
+  "type": "section-intro",
+  "label": "Section intro",
+  "group": "Strongman",
+  "icon": "text",
+  "description": "A section title on the left and a paragraph on the right — the introduction above a row of tiles or cards.",
+  "fields": [
+    { "key": "title", "type": "text", "label": "Section title" },
+    { "key": "text", "type": "richtext", "label": "Intro copy" },
+    { "key": "level", "type": "select", "label": "Heading level", "default": "2", "width": "half", "options": [{ "value": "1", "label": "Biggest (page title)" }, { "value": "2", "label": "Section title" }, { "value": "3", "label": "Sub-section" }] },
+    { "key": "justify", "type": "boolean", "label": "Justify the body copy", "default": false, "width": "half" }
+  ],
+  "defaults": { "level": "2", "justify": false }
+}

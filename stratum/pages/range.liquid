@@ -1,0 +1,16 @@
+{% comment %}
+  A range landing page. The header and intro copy come from the document; the
+  catalogue itself is the range-grid block inside the region, which queries the
+  models tagged into this range rather than needing them listed by hand.
+{% endcomment %}
+<article class="tpl-range">
+  <header class="wb-section pad-compact">
+    <div class="container w-normal doc-head">
+      <p class="eyebrow">{{ concept.label | default: 'Range' | escape }}</p>
+      <h1 class="doc-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+      {% if fields.lede %}<p class="doc-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
+    </div>
+  </header>
+
+  {% region 'content' %}
+</article>

@@ -1,0 +1,13 @@
+{
+  "type": "diagram",
+  "label": "Diagram",
+  "group": "Strongman",
+  "icon": "chart",
+  "description": "A technical drawing — lift mechanism, space check, power or slab section. Pick a finished drawing from your picture library.",
+  "fields": [
+    { "key": "image", "type": "image", "label": "Drawing", "help": "Choose one of the technical drawings from your picture library." },
+    { "key": "title", "type": "text", "label": "Title (overline)" },
+    { "key": "caption", "type": "text", "label": "Caption (under the figure)" }
+  ],
+  "defaults": {}
+}

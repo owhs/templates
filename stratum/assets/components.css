@@ -810,3 +810,265 @@ a.sec-cell:hover { background: var(--bg-subtle); }
   .wb-download { grid-template-columns: auto 1fr; }
   .wb-download .dl-arrow { display: none; }
 }
+
+/* ==== strongman-compatible blocks ====
+
+   The ten block types a lift catalogue's content uses, drawn in stratum's
+   language rather than the one they were authored in: hairline lattices
+   instead of cards with shadows, square corners, mono micro-labels, the dark
+   plate for anything cinematic. Tokens only — nothing here names a colour, so
+   the hue slider and the dark scheme reach all of it.
+   ===================================================================== */
+
+/* `entry` is the legacy stored name for the reading column. */
+.bh-w-entry { width: min(100% - 6rem, var(--container)); max-width: none; margin-inline: auto; }
+@media (max-width: 640px) { .bh-w-entry { width: calc(100% - 2rem); } }
+
+/* ---------------------------- photo row --------------------------------- */
+.sm-photos { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); grid-template-columns: repeat(2, 1fr); }
+.sm-photos.cols-1 { grid-template-columns: 1fr; }
+.sm-photos.cols-auto { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+@media (min-width: 700px) {
+  .sm-photos.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .sm-photos.cols-4 { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 560px) { .sm-photos, .sm-photos.cols-3, .sm-photos.cols-4, .sm-photos.cols-auto { grid-template-columns: 1fr; } }
+
+.sm-photos.gap-none { gap: 0; }
+.sm-photos.gap-tight { gap: 1px; }
+.sm-photos.gap-normal { gap: 2px; }
+.sm-photos.gap-loose { gap: 1rem; background: none; border: 0; }
+.sm-photos.gap-loose .sm-photo { border: 1px solid var(--line); }
+.sm-photos.is-rounded .sm-photo, .sm-photos.is-rounded img { border-radius: var(--radius); }
+
+.sm-photo { background: var(--bg-raise); margin: 0; position: relative; display: grid; }
+.sm-photo img { width: 100%; display: block; }
+.sm-photos[data-gallery] .sm-photo img { cursor: zoom-in; }
+
+/* frame shape — only meaningful when the images are cropped or padded */
+.sm-photos.ratio-16-9 img { aspect-ratio: 16/9; }
+.sm-photos.ratio-3-2 img  { aspect-ratio: 3/2; }
+.sm-photos.ratio-4-3 img  { aspect-ratio: 4/3; }
+.sm-photos.ratio-1-1 img  { aspect-ratio: 1/1; }
+.sm-photos.ratio-3-4 img  { aspect-ratio: 3/4; }
+.sm-photos.ratio-slim img { aspect-ratio: 21/7; }
+.sm-photos.fit-cover img   { object-fit: cover; }
+.sm-photos.fit-contain img { object-fit: contain; padding: 0.6rem; }
+.sm-photos.fit-natural img, .sm-photos.fit-masonry img { aspect-ratio: auto; object-fit: contain; height: auto; }
+
+/* masonry: natural heights packed into columns rather than a row grid */
+.sm-photos.fit-masonry { display: block; columns: 2; column-gap: 2px; background: none; border: 0; }
+.sm-photos.fit-masonry.cols-1 { columns: 1; }
+.sm-photos.fit-masonry.cols-3 { columns: 3; }
+.sm-photos.fit-masonry.cols-4 { columns: 4; }
+.sm-photos.fit-masonry .sm-photo { break-inside: avoid; margin-bottom: 2px; border: 1px solid var(--line); }
+@media (max-width: 560px) { .sm-photos.fit-masonry, .sm-photos.fit-masonry.cols-3, .sm-photos.fit-masonry.cols-4 { columns: 1; } }
+
+.sm-photo figcaption {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-faint); padding: 0.7rem 0.9rem; border-top: 1px solid var(--line-soft); align-self: end;
+}
+
+/* --------------------------- specification ------------------------------ */
+.sm-specs .spec-title { display: flex; align-items: center; gap: 0.6rem; }
+.sm-specs-ico { color: var(--accent); display: inline-flex; }
+.sm-spec-v { display: block; }
+/* the qualifier sits under the figure; the brackets are drawn, never stored */
+.sm-spec-sub { display: block; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.08em; color: var(--ink-faint); margin-top: 0.2rem; }
+.sm-spec-sub::before { content: "("; }
+.sm-spec-sub::after { content: ")"; }
+
+/* ------------------------------ diagram --------------------------------- */
+.sm-diagram { margin: 0; display: grid; gap: 0.9rem; max-width: 58rem; }
+.sm-diagram-over { margin: 0; }
+.sm-diagram-plate { padding: clamp(1rem, 3vw, 2rem); }
+.sm-diagram-plate img { width: 100%; height: auto; }
+.sm-diagram-empty { display: grid; place-items: center; min-height: 14rem; color: var(--ink-faint); font-family: var(--font-mono); font-size: var(--text-s); border: 1px dashed var(--line); }
+.sm-diagram-cap { font-size: var(--text-s); color: var(--ink-mute); border-left: 2px solid var(--accent); padding-left: 0.9rem; max-width: 60ch; }
+
+/* -------------------------- related products ---------------------------- */
+.sm-related { display: grid; gap: 1.4rem; }
+.sm-related-title { font-size: var(--text-xl); padding-bottom: 0.9rem; border-bottom: 1px solid var(--ink); }
+.sm-rel-why {
+  font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-faint); border-top: 1px solid var(--line-soft); padding-top: 0.6rem;
+}
+
+/* --------------------------- project details ---------------------------- */
+.sm-projmeta {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  background: var(--line); border: 1px solid var(--line);
+}
+.sm-projmeta .sm-cell { background: var(--bg); display: grid; gap: 0.35rem; padding: 0.9rem 1rem; }
+.sm-projmeta .sm-k { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: var(--track-micro); text-transform: uppercase; color: var(--ink-faint); }
+.sm-projmeta .sm-v { font-family: var(--font-display); font-size: var(--text-l); text-transform: uppercase; letter-spacing: 0.03em; }
+.sm-projmeta .sm-v a { color: var(--accent); }
+
+/* ------------------------------- tiles ---------------------------------- */
+.sm-tiles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.sm-tiles.cols-2 { grid-template-columns: 1fr; }
+@media (min-width: 820px) { .sm-tiles.cols-2 { grid-template-columns: repeat(2, 1fr); } }
+.sm-tile { position: relative; display: grid; background: var(--plate); min-height: 20rem; isolation: isolate; }
+.sm-tile-media { margin: 0; position: absolute; inset: 0; z-index: -1; }
+.sm-tile-media img { width: 100%; height: 100%; object-fit: cover; }
+.sm-tile::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, var(--plate-deep) 0%, color-mix(in oklch, var(--plate-deep) 72%, transparent) 46%, transparent 78%);
+}
+.sm-tile-body { align-self: end; padding: clamp(1.4rem, 4vw, 2.8rem); max-width: 42rem; display: grid; gap: 0.9rem; justify-items: start; }
+.sm-tile-title { font-size: var(--text-xl); text-transform: uppercase; letter-spacing: var(--track-display); }
+.sm-tile-text { color: var(--plate-mute); max-width: 52ch; }
+.sm-tile-text > * + * { margin-top: 0.7em; }
+.sm-tile-act { margin: 0; }
+@media (max-width: 560px) { .sm-tile::after { background: linear-gradient(0deg, var(--plate-deep) 18%, color-mix(in oklch, var(--plate-deep) 62%, transparent) 70%); } }
+
+/* --------------------------- section intro ------------------------------ */
+.sm-intro { display: grid; gap: clamp(1rem, 3vw, 2.4rem); align-items: start; padding-bottom: 0.4rem; }
+@media (min-width: 860px) { .sm-intro { grid-template-columns: minmax(16rem, 0.85fr) 1.15fr; } }
+.sm-intro-title { font-size: var(--text-2xl); line-height: 1.02; text-wrap: balance; }
+.sm-intro-head { border-top: 2px solid var(--accent); padding-top: 0.9rem; }
+.sm-intro-body { max-width: 62ch; }
+.sm-intro-body.is-justified { text-align: justify; hyphens: auto; }
+
+/* ------------------------------- hero ----------------------------------- */
+.sm-hero { position: relative; background: var(--plate-deep); overflow: hidden; }
+.sm-hero .stage-grid-lines { z-index: 2; }
+.sm-hero-view { display: grid; position: relative; }
+.sm-hero-slide {
+  grid-area: 1 / 1; position: relative; display: grid; align-items: end;
+  min-height: clamp(22rem, 62vh, 40rem);
+  opacity: 0; transition: opacity .9s ease; pointer-events: none;
+}
+.sm-hero-slide.is-active { opacity: 1; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .sm-hero-slide { transition: none; } }
+.sm-hero-media { margin: 0; position: absolute; inset: 0; }
+.sm-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.sm-hero-slide::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(0deg, var(--plate-deep) 2%, color-mix(in oklch, var(--plate-deep) 55%, transparent) 46%, transparent 82%);
+}
+.sm-hero-copy {
+  position: relative; z-index: 1; width: min(100% - 2.6rem, var(--container)); margin-inline: auto;
+  padding-block: clamp(1.8rem, 5vw, 3.4rem); display: grid; gap: 0.9rem; justify-items: start;
+}
+.sm-hero-copy h2 { font-size: var(--text-2xl); line-height: 1.02; text-transform: uppercase; letter-spacing: var(--track-display); max-width: 22ch; }
+.sm-hero-copy h2::before {
+  content: ""; display: block; width: 3.4rem; height: 2px; background: var(--accent); margin-bottom: 0.9rem;
+}
+.sm-hero-text { color: var(--plate-mute); max-width: 56ch; font-size: var(--text-l); }
+.sm-hero-text a { color: var(--accent); }
+.sm-hero-view.is-dragging { cursor: grabbing; user-select: none; }
+.sm-hero-dots { position: absolute; z-index: 3; bottom: 1rem; left: 50%; translate: -50% 0; display: flex; gap: 0.5rem; }
+.sm-hero-dots button { width: 1.6rem; height: 3px; border: 0; padding: 0; cursor: pointer; background: var(--plate-line); }
+.sm-hero-dots button[aria-current="true"] { background: var(--accent); }
+
+/* ----------------------------- link row --------------------------------- */
+.sm-linkrow { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.sm-linkrow.align-center { justify-content: center; }
+.sm-linkrow.align-left { justify-content: flex-start; }
+
+/* --------------------------- footer columns ----------------------------- */
+.footer-cols { display: grid; gap: 2rem 2.4rem; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+.sm-footcol-title {
+  font-family: var(--font-mono); font-size: var(--text-micro); font-weight: 500;
+  letter-spacing: var(--track-micro); text-transform: uppercase; color: var(--plate-faint);
+  padding-bottom: 0.7rem; border-bottom: 1px solid var(--plate-line); margin-bottom: 0.9rem;
+}
+.sm-footcol-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.sm-footcol-links a { color: var(--plate-mute); text-decoration: none; font-size: var(--text-s); }
+.sm-footcol-links a:hover { color: var(--accent); }
+
+/* ------------------------- footer chrome extras ------------------------- */
+.footer-cta { background: var(--plate-deep); padding-block: clamp(2.4rem, 6vw, 4.4rem); text-align: center; }
+.footer-cta h2 { font-size: var(--text-2xl); text-transform: uppercase; letter-spacing: var(--track-display); }
+.footer-cta-text { color: var(--plate-mute); max-width: 54ch; margin: 1rem auto 1.8rem; }
+.footer-cta-text a { color: var(--accent); }
+.fc-address p { margin: 0; }
+.fc-address strong { font-weight: inherit; }
+.footer-legal { font-size: var(--text-s); }
+.footer-legal p { margin: 0; }
+.footer-legal a { color: var(--plate-mute); }
+.footer-legal a:hover { color: var(--accent); }
+/* A site with its own wordmark does not need its name set beside it twice. */
+.site-brand:has(.brand-logo) .brand-name { display: none; }
+.brand-logo { height: 2.1rem; width: auto; max-width: 13rem; object-fit: contain; }
+.site-footer .brand-logo { filter: brightness(0) invert(1); }
+
+/* ---------------------- site plugin blocks (cards/faq) ------------------ */
+/* `range-grid` and `faq-grid` come from the site's own plugin and emit their
+   own class names; these give them stratum's catalogue and FAQ treatment. */
+.cards-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); grid-template-columns: 1fr; }
+@media (min-width: 720px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+.cards-grid > .card { background: var(--bg-raise); }
+a.card { display: grid; text-decoration: none; color: inherit; height: 100%; align-content: start; transition: background .18s; }
+a.card:hover { background: var(--bg-subtle); }
+.card__image { margin: 0; background: var(--bg-subtle); padding: 1rem; border-bottom: 1px solid var(--line-soft); }
+.card__image img { width: 100%; aspect-ratio: 16/10; object-fit: contain; }
+.card__content { padding: 1.2rem 1.3rem 1.5rem; display: grid; gap: 0.55rem; }
+.card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-l); text-transform: uppercase; letter-spacing: 0.04em; }
+.card__meta { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.card__entry { font-size: var(--text-s); color: var(--ink-mute); margin: 0; }
+.cards-grid .is-empty, .sb-grid .is-empty { padding: 1.4rem; color: var(--ink-faint); font-family: var(--font-mono); font-size: var(--text-s); }
+
+.faq { display: grid; gap: 1.4rem; }
+.faq .section__title { font-size: var(--text-xl); padding-bottom: 0.9rem; border-bottom: 1px solid var(--ink); }
+.faq__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .faq__list.cols-2 { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; } }
+.faq__item { border-bottom: 1px solid var(--line); padding: 1.1rem 0; }
+.faq__question { font-family: var(--font-display); font-size: var(--text-l); text-transform: uppercase; letter-spacing: 0.02em; }
+.faq__answer { color: var(--ink-mute); margin-top: 0.6rem; max-width: 68ch; }
+.faq__answer > * + * { margin-top: 0.7em; }
+.faq__answer a { color: var(--accent); }
+
+/* -------------------------- faq page toolbar ---------------------------- */
+.faq-toolbar { display: grid; gap: 0.9rem; padding-bottom: 1.6rem; }
+.faq-search {
+  width: 100%; padding: 0.75rem 0.9rem; background: var(--bg-raise); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius-s); font: inherit; font-size: var(--text-s);
+}
+.faq-search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.faq-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.faq-pills .cat-chip { background: none; cursor: pointer; font-family: var(--font-mono); }
+.faq-pills .cat-chip.is-active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+.faq-status { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.1em; color: var(--ink-faint); margin: 0; }
+
+/* ------------------------ gallery lightbox extras ----------------------- */
+.lightbox-overlay.is-gallery { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; }
+.lightbox-overlay.is-gallery .lb-stage { margin: 0; display: grid; gap: 0.8rem; justify-items: center; }
+.lightbox-overlay.is-gallery img { max-width: min(88vw, 76rem); max-height: 82vh; width: auto; }
+.lightbox-overlay.is-gallery figcaption {
+  font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--plate-mute); text-align: center;
+}
+.lightbox-overlay.is-gallery button {
+  background: none; border: 1px solid var(--plate-line); color: var(--plate-ink);
+  width: 2.6rem; height: 2.6rem; font-size: 1.5rem; line-height: 1; cursor: pointer; border-radius: var(--radius-s);
+}
+.lightbox-overlay.is-gallery button:hover { border-color: var(--accent); color: var(--accent); }
+.lightbox-overlay.is-gallery .lb-close { position: absolute; top: 1rem; right: 1rem; }
+.lightbox-overlay.is-gallery .lb-count {
+  position: absolute; bottom: 1rem; left: 50%; translate: -50% 0; margin: 0;
+  font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.16em; color: var(--plate-mute);
+}
+
+/* ------------------------ document + product pages ---------------------- */
+.doc-head { display: grid; gap: 0.9rem; padding-top: clamp(1.6rem, 4vw, 3rem); }
+.doc-title { font-size: var(--text-2xl); line-height: 1.02; text-wrap: balance; }
+.doc-lede { font-size: var(--text-l); color: var(--ink-mute); max-width: 60ch; text-wrap: pretty; }
+.pdp-intro { color: var(--plate-mute); max-width: 52ch; margin-top: 0.9rem; }
+.pdp-split {
+  width: min(100% - 2.6rem, var(--container)); margin-inline: auto;
+  padding-block: clamp(2rem, 5vw, 3.6rem); display: grid; gap: clamp(1.8rem, 4vw, 3.4rem); align-items: start;
+}
+@media (min-width: 1000px) { .pdp-split { grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.85fr); } }
+.pdp-main { min-width: 0; display: grid; gap: clamp(1.6rem, 3.5vw, 2.6rem); align-content: start; }
+.pdp-side { min-width: 0; display: grid; gap: 1.8rem; align-content: start; }
+@media (min-width: 1000px) { .pdp-side { position: sticky; top: calc(var(--header-h, 4rem) + 1.2rem); } }
+.pdp-side .sb-spec { max-width: none; }
+.pdp-related { padding-top: 0; }
+.sys-lede { font-size: var(--text-s); color: var(--ink-mute); }
+
+/* An unused footer-columns slot must not add a gap (automatic leaves it empty). */
+.footer-cols:empty { display: none; }

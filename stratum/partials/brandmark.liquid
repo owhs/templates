@@ -1,3 +1,15 @@
+{% comment %}
+  A site that has drawn its own wordmark uses it; everything else gets the
+  template's mark. `brandingBanner` is the name this is stored under when the
+  owner uploaded a banner, and the organisation logo in SEO settings is the
+  fallback — both are already the site's own artwork, so neither needs a
+  separate setting. The mark stands in for the site name when it is present,
+  and CSS drops the repeated text beside it.
+{% endcomment %}
+{% assign brand_logo = site.vars.brandingBanner | default: site.seo.organization.logo %}
+{% if brand_logo %}
+  <img class="brand-logo" src="{{ brand_logo }}" alt="{{ site.name | escape }}" width="200" height="40">
+{% else %}
 <svg class="brand-mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
   <rect x="0.75" y="0.75" width="30.5" height="30.5" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
   <rect x="5" y="20.5" width="14" height="3.2" fill="currentColor"/>
@@ -5,3 +17,4 @@
   <rect x="5" y="8.3" width="14" height="3.2" fill="currentColor" opacity="0.44"/>
   <path d="M24 24.2V8.6M24 8.6l-3 3.2M24 8.6l3 3.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/>
 </svg>
+{% endif %}

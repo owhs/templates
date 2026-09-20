@@ -1,4 +1,20 @@
 {% slot 'footer.before' %}
+
+{% comment %}
+  A closing call to action, for sites that set one. It sits above the footer
+  proper on the dark plate so it reads as the end of the page rather than part
+  of the small print.
+{% endcomment %}
+{% if site.vars.footerCtaHeading or site.vars.footerCtaText %}
+  <section class="footer-cta on-plate">
+    <div class="container">
+      {% if site.vars.footerCtaHeading %}<h2>{{ site.vars.footerCtaHeading | escape }}</h2>{% endif %}
+      {% if site.vars.footerCtaText %}<div class="footer-cta-text">{{ site.vars.footerCtaText | md }}</div>{% endif %}
+      {% if site.vars.ctaHref %}<p><a class="btn btn-primary btn-large" href="{{ site.vars.ctaHref }}">{{ site.vars.ctaLabel | default: 'Get in touch' | escape }}</a></p>{% endif %}
+    </div>
+  </section>
+{% endif %}
+
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
@@ -11,13 +27,27 @@
       </a>
       {% if site.tagline %}<p class="footer-tagline">{{ site.tagline | escape }}</p>{% endif %}
       <div class="footer-contact">
+        {% comment %}
+          Contact details are read through a chain of names, because different
+          sites on this template spell them differently — `address` is one
+          line, `addressLines` is a written-out block. Whichever exists is what
+          the visitor sees.
+        {% endcomment %}
         {% if site.vars.phone %}<div class="fc-row"><span class="fc-k">Phone</span><a href="tel:{{ site.vars.phoneHref | default: site.vars.phone }}">{{ site.vars.phone }}</a></div>{% endif %}
         {% if site.vars.email %}<div class="fc-row"><span class="fc-k">Email</span><a href="mailto:{{ site.vars.email }}">{{ site.vars.email }}</a></div>{% endif %}
-        {% if site.vars.address %}<div class="fc-row"><span class="fc-k">Works</span><span>{{ site.vars.address | escape }}</span></div>{% endif %}
+        {% if site.vars.address %}<div class="fc-row"><span class="fc-k">Works</span><span>{{ site.vars.address | escape }}</span></div>
+        {% elsif site.vars.addressLines %}<div class="fc-row"><span class="fc-k">Works</span><span class="fc-address">{{ site.vars.addressLines | md }}</span></div>{% endif %}
         {% if site.vars.hours %}<div class="fc-row"><span class="fc-k">Hours</span><span>{{ site.vars.hours | escape }}</span></div>{% endif %}
       </div>
       <div class="footer-social">{% slot 'footer.social' %}</div>
     </div>
+
+    {% comment %}
+      The link deck. `footer.columns` holds up to three footer-column blocks;
+      when the slot is empty (which it is on a site that keeps its footer links
+      in a menu) nothing is emitted and the site menu below stands alone.
+    {% endcomment %}
+    <div class="footer-cols">{% slot 'footer.columns' %}</div>
 
     <div class="footer-menu">
       <h4 class="visually-hidden">Site</h4>
@@ -27,6 +57,7 @@
 
   <div class="container footer-meta">
     <p>© {{ 'now' | date: '%Y' }} {{ site.vars.legalName | default: site.name | escape }}{% if site.vars.companyNo %} · Reg {{ site.vars.companyNo }}{% endif %}</p>
+    {% if site.vars.copyright %}<div class="footer-legal">{{ site.vars.copyright | md }}</div>{% endif %}
     <p>{{ site.vars.footerNote | default: 'Parking systems, lifts and car elevators — supplied, installed and maintained in the UK' }}</p>
   </div>
 </footer>

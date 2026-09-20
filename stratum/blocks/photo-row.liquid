@@ -1,0 +1,31 @@
+{% comment %}
+  A row of photographs. The engine puts `.bh-w-<width>` on the block root from
+  the canonical width field, so the row claims the outer tracks without this
+  template knowing anything about the page grid — stratum's own width classes
+  do the work. (`entry` is the legacy name for the reading column; base.css
+  gets an alias so stored pages keep their width.)
+
+  Stratum's gallery look is a hairline lattice: 1px rules showing the page
+  line colour between plates, square corners, mono captions. data-gallery
+  marks the row as one lightbox set so the arrows step through it.
+{% endcomment %}
+{% assign cols = props.columns | default: '2' %}
+{% assign fit = props.fit | default: 'cover' %}
+
+<div class="sm-photos cols-{{ cols }} fit-{{ fit }} ratio-{{ props.ratio | default: '4-3' }} gap-{{ props.gap | default: 'normal' }}{% if props.rounded %} is-rounded{% endif %}"
+     {% if props.lightbox %}data-gallery{% endif %}>
+  {% for i in props.images %}
+    {% if i.mediaId %}
+      <figure class="sm-photo"{% if props.lightbox %} data-lightbox="1"{% endif %}{{ 'images' | wbe_at: forloop.index0, 'mediaId', 'img' }}>
+        {% if cols == '1' %}
+          {{ i.mediaId | img: alt: i.alt, width: 1366, sizes: '(max-width: 640px) 100vw, 90vw' }}
+        {% elsif cols == '2' %}
+          {{ i.mediaId | img: alt: i.alt, width: 1024, sizes: '(max-width: 640px) 100vw, 45vw' }}
+        {% else %}
+          {{ i.mediaId | img: alt: i.alt, width: 768, sizes: '(max-width: 640px) 50vw, 30vw' }}
+        {% endif %}
+        {% if i.caption %}<figcaption{{ 'images' | wbe_at: forloop.index0, 'caption' }}>{{ i.caption | escape }}</figcaption>{% endif %}
+      </figure>
+    {% endif %}
+  {% endfor %}
+</div>

@@ -1,0 +1,44 @@
+{% comment %}
+  Full-width photographs that cross-fade, with a caption over each.
+
+  The first slide is the LCP image on the home page, so it loads eagerly and
+  gets a preload hint (`priority: true`); the rest stay lazy. Slides are
+  stacked in one grid cell and cross-faded by the layout script — with no JS
+  the first one simply shows, which is why it carries `is-active` from the
+  server.
+
+  Stratum's treatment: the plate palette over the photograph, the caption
+  block set on the drawing grid with a mono eyebrow rule, square corners.
+{% endcomment %}
+<section class="sm-hero on-plate" data-hero-slider data-hero-interval="{{ props.interval | default: 6 | times: 1000 }}">
+  <span class="stage-grid-lines" aria-hidden="true"></span>
+  <div class="sm-hero-view">
+    {% for s in props.slides %}
+      <div class="sm-hero-slide{% if forloop.first %} is-active{% endif %}"{% unless forloop.first %} aria-hidden="true"{% endunless %}>
+        {% if s.image %}
+          <figure class="sm-hero-media"{{ 'slides' | wbe_at: forloop.index0, 'image', 'img' }}>
+            {% if forloop.first %}
+              {{ s.image | img: priority: true, width: 1984, sizes: '100vw' }}
+            {% else %}
+              {{ s.image | img: width: 1984, sizes: '100vw' }}
+            {% endif %}
+          </figure>
+        {% endif %}
+        {% if s.heading or s.caption %}
+          <div class="sm-hero-copy">
+            {% if s.heading %}<h2{{ 'slides' | wbe_at: forloop.index0, 'heading' }}>{{ s.heading | escape }}</h2>{% endif %}
+            {% if s.caption %}<div class="sm-hero-text"{{ 'slides' | wbe_at: forloop.index0, 'caption', 'md' }}>{{ s.caption | md }}</div>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if props.dots and props.slides.size > 1 %}
+      <div class="sm-hero-dots" role="group" aria-label="Choose slide">
+        {% for s in props.slides %}
+          <button type="button" aria-current="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Slide {{ forloop.index }}"></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

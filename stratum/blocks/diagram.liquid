@@ -1,0 +1,19 @@
+{% comment %}
+  A technical drawing. Stratum frames every schematic the same way the native
+  `figure` block does — a dark plate with a mono caption stamped in the corner —
+  so a ported strongman diagram sits in the same cabinet as stratum's own art.
+
+  data-art lets the layout runtime drive the SVG's URL fragment (numbers on or
+  off, motion stopped) exactly as it does for `figure`.
+{% endcomment %}
+<figure class="sm-diagram" data-art data-art-motion="always" data-art-leaders="true">
+  {% if props.title %}<p class="eyebrow sm-diagram-over"{{ 'title' | wbe }}>{{ props.title | escape }}</p>{% endif %}
+  <div class="sm-diagram-plate art-plate on-plate"{{ 'image' | wbe: 'img' }}>
+    {% if props.image %}
+      {{ props.image | img: width: 1200, sizes: '(min-width: 900px) 760px, 92vw', class: 'sm-diagram-img' }}
+    {% else %}
+      <div class="sm-diagram-empty">Pick a drawing…</div>
+    {% endif %}
+  </div>
+  {% if props.caption %}<figcaption class="sm-diagram-cap"{{ 'caption' | wbe }}>{{ props.caption | escape }}</figcaption>{% endif %}
+</figure>

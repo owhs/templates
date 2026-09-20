@@ -1,0 +1,26 @@
+{% comment %}
+  Hand-picked links to other lifts. Nothing is chosen automatically.
+
+  These are stratum's catalogue cards — the same `sys-card` shell the native
+  `system-grid` block uses, so the "you might also like" row at the foot of a
+  data sheet matches the catalogue the visitor came from. The reason line takes
+  the place of the card's spec rows.
+{% endcomment %}
+<div class="sm-related">
+  {% if props.title %}<h2 class="sm-related-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h2>{% endif %}
+  <div class="sb-grid cols-3">
+    {% for it in props.items %}
+      <a class="sys-card" href="{{ it.href | default: '#' }}">
+        <span class="sys-media"{{ 'items' | wbe_at: forloop.index0, 'image', 'img' }}>
+          {% if it.image %}{{ it.image | img: width: 640, sizes: '(max-width: 720px) 92vw, 340px' }}{% endif %}
+        </span>
+        <span class="sys-body">
+          <span class="sys-name"{{ 'items' | wbe_at: forloop.index0, 'name' }}>{{ it.name | escape }}</span>
+          {% if it.strapline %}<span class="sys-text"{{ 'items' | wbe_at: forloop.index0, 'strapline' }}>{{ it.strapline | escape }}</span>{% endif %}
+          {% if it.reason %}<span class="sm-rel-why"{{ 'items' | wbe_at: forloop.index0, 'reason' }}>{{ it.reason | escape }}</span>{% endif %}
+          <span class="sys-more">View lift →</span>
+        </span>
+      </a>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{% comment %}
+  A case study. The scope / client / service / location bar is a block in the
+  region rather than template chrome, because not every project fills in all
+  four — so the header here is only the title and, when there is one, the lede.
+{% endcomment %}
+<article class="tpl-project">
+  <header class="wb-section pad-compact">
+    <div class="container w-normal doc-head">
+      <p class="eyebrow">{{ concept.label | default: 'Project' | escape }}</p>
+      <h1 class="doc-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+      {% if fields.lede %}<p class="doc-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
+    </div>
+  </header>
+
+  {% region 'content' %}
+</article>

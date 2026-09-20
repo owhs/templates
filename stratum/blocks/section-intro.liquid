@@ -1,0 +1,18 @@
+{% comment %}
+  Section title left, introduction right — the opener above a row of tiles or
+  cards. Stratum sets the title in the display face against a hairline rule and
+  lets the copy run in the reading measure beside it, the same split the page
+  templates use for their section headers.
+{% endcomment %}
+<div class="sm-intro">
+  <header class="sm-intro-head">
+    {% case props.level %}
+      {% when '1' %}<h1 class="sm-intro-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h1>
+      {% when '3' %}<h3 class="sm-intro-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h3>
+      {% else %}<h2 class="sm-intro-title"{{ 'title' | wbe }}>{{ props.title | escape }}</h2>
+    {% endcase %}
+  </header>
+  {% if props.text %}
+    <div class="sm-intro-body prose{% if props.justify %} is-justified{% endif %}"{{ 'text' | wbe: 'md' }}>{{ props.text | md }}</div>
+  {% endif %}
+</div>

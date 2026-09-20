@@ -1,0 +1,107 @@
+{% comment %}
+  The FAQ page (a document opts in with "template": "faqs").
+
+  Content is already grouped into categories in the CMS — an H3 heading block
+  followed by an FAQ block, repeated per category. This template adds a search
+  box and a category filter built at runtime from those same headings. Every
+  question and answer stays in the static HTML regardless of JavaScript:
+  filtering only ever hides elements with the `hidden` attribute, so the page
+  is fully crawlable and readable with scripting off.
+{% endcomment %}
+<article class="tpl-faqs">
+  <header class="wb-section pad-compact">
+    <div class="container w-normal doc-head">
+      <p class="eyebrow">{{ concept.label | default: 'Help' | escape }}</p>
+      <h1 class="doc-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+      {% if fields.lede %}<p class="doc-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
+    </div>
+  </header>
+
+  <div class="faqs-body">
+    {% region 'content' %}
+  </div>
+</article>
+<script>
+(function () {
+  var article = document.querySelector('.tpl-faqs')
+  var body = article && article.querySelector('.faqs-body')
+  if (!body) return
+
+  /* A category is an H3 heading block immediately followed by an FAQ block.
+     Anything else in the region is left alone and always shown. */
+  var heads = [].slice.call(body.querySelectorAll('.wb-heading > h3[id]'))
+  var groups = heads.map(function (h) {
+    var wrap = h.parentElement
+    var faq = wrap.nextElementSibling
+    return (faq && faq.classList.contains('wb-faq')) ? { id: h.id, label: h.textContent, heading: wrap, faq: faq } : null
+  }).filter(Boolean)
+  if (groups.length < 2) return
+
+  var toolbar = document.createElement('div')
+  toolbar.className = 'faq-toolbar container w-normal'
+
+  var search = document.createElement('input')
+  search.type = 'search'
+  search.className = 'faq-search'
+  search.placeholder = 'Search questions…'
+  search.setAttribute('aria-label', 'Search questions')
+  toolbar.appendChild(search)
+
+  var pills = document.createElement('div')
+  pills.className = 'faq-pills'
+  var all = document.createElement('button')
+  all.type = 'button'; all.className = 'cat-chip is-active'; all.textContent = 'All'; all.dataset.cat = 'all'
+  pills.appendChild(all)
+  groups.forEach(function (g) {
+    var p = document.createElement('button')
+    p.type = 'button'; p.className = 'cat-chip'; p.textContent = g.label; p.dataset.cat = g.id
+    pills.appendChild(p)
+  })
+  toolbar.appendChild(pills)
+
+  var status = document.createElement('p')
+  status.className = 'faq-status'
+  status.hidden = true
+  toolbar.appendChild(status)
+
+  article.insertBefore(toolbar, body)
+
+  var activeCat = 'all'
+
+  function apply() {
+    var term = search.value.trim().toLowerCase()
+    var shown = 0
+    groups.forEach(function (g) {
+      var catOn = activeCat === 'all' || activeCat === g.id
+      var hit = false
+      ;[].slice.call(g.faq.querySelectorAll('.wb-faq-item')).forEach(function (item) {
+        var ok = catOn && (!term || item.textContent.toLowerCase().indexOf(term) !== -1)
+        item.hidden = !ok
+        if (ok) { hit = true; shown++ }
+      })
+      g.heading.hidden = !hit
+      g.faq.hidden = !hit
+    })
+    if (term) {
+      status.hidden = false
+      status.textContent = shown + (shown === 1 ? ' question matches “' : ' questions match “') + search.value + '”.'
+    } else {
+      status.hidden = true
+    }
+  }
+
+  search.addEventListener('input', apply)
+  ;[].slice.call(pills.children).forEach(function (p) {
+    p.addEventListener('click', function () {
+      [].slice.call(pills.children).forEach(function (o) { o.classList.remove('is-active') })
+      p.classList.add('is-active')
+      activeCat = p.dataset.cat
+      apply()
+      if (activeCat !== 'all') {
+        var g = groups.filter(function (x) { return x.id === activeCat })[0]
+        if (g) window.scrollTo({ top: g.heading.getBoundingClientRect().top + window.pageYOffset - (toolbar.offsetHeight + 24), behavior: 'smooth' })
+      }
+    })
+  })
+})()
+</script>

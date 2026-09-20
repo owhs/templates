@@ -1,0 +1,17 @@
+{% comment %}
+  The scope / client / service / location bar at the head of a case study.
+  Blank entries are dropped, so a project with only a client and a location
+  still reads as a deliberate two-cell bar rather than a gappy table.
+
+  Presented as stratum's mono key/value cells — the same `sm-k` / `sm-v` pair
+  the stage block uses for its figures.
+{% endcomment %}
+<ul class="sm-projmeta">
+  {% if props.scope %}<li class="sm-cell"><span class="sm-k">Scope</span><span class="sm-v"{{ 'scope' | wbe }}>{{ props.scope | escape }}</span></li>{% endif %}
+  {% if props.client %}<li class="sm-cell"><span class="sm-k">Client</span><span class="sm-v"{{ 'client' | wbe }}>{{ props.client | escape }}</span></li>{% endif %}
+  {% if props.service %}<li class="sm-cell"><span class="sm-k">Service</span><span class="sm-v"{{ 'service' | wbe }}>{{ props.service | escape }}</span></li>{% endif %}
+  {% if props.location %}<li class="sm-cell"><span class="sm-k">Location</span><span class="sm-v"{{ 'location' | wbe }}>{{ props.location | escape }}</span></li>{% endif %}
+  {% if props.link.href %}
+    <li class="sm-cell"><span class="sm-k">Website</span><span class="sm-v"><a href="{{ props.link.href }}" target="_blank" rel="noopener">{{ props.link.label | default: 'Visit site' | escape }}</a></span></li>
+  {% endif %}
+</ul>

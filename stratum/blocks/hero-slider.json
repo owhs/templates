@@ -1,0 +1,22 @@
+{
+  "type": "hero-slider",
+  "label": "Hero slider",
+  "group": "Strongman",
+  "icon": "image",
+  "description": "Full-width photographs that fade from one to the next, with a caption over each. One slide is fine — the controls disappear.",
+  "fields": [
+    {
+      "key": "slides",
+      "type": "list",
+      "label": "Slides",
+      "item": [
+        { "key": "image", "type": "image", "label": "Image" },
+        { "key": "heading", "type": "text", "label": "Heading" },
+        { "key": "caption", "type": "richtext", "label": "Caption", "help": "A small line under the heading. You can put a link in it." }
+      ]
+    },
+    { "key": "interval", "type": "number", "label": "Seconds per slide", "default": 6, "width": "half" },
+    { "key": "dots", "type": "boolean", "label": "Show slide dots", "default": false, "width": "half" }
+  ],
+  "defaults": { "slides": [], "interval": 6, "dots": false }
+}

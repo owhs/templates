@@ -7,7 +7,10 @@
   </span>
   <span class="sys-body">
     <span class="sys-name">{{ d.title | escape }}</span>
-    {% if d.fields.tagline %}<span class="sys-text">{{ d.fields.tagline | escape | truncate: 118 }}</span>{% endif %}
+    {% if d.fields.tagline %}<span class="sys-text">{{ d.fields.tagline | escape | truncate: 118 }}</span>
+    {% elsif d.fields.strapline %}<span class="sys-text">{{ d.fields.strapline | escape }}</span>{% endif %}
+    {% comment %} A catalogue that writes a card summary rather than a tagline gets it in full — it is the card's whole description. {% endcomment %}
+    {% if d.fields.lede %}<span class="sys-lede">{{ d.fields.lede | escape }}</span>{% endif %}
     {% if d.fields.keySpecs %}
       <span class="sys-specs">
         {% for s in d.fields.keySpecs %}<span class="row"><span class="k">{{ s.label | escape }}</span><span class="v">{{ s.value | escape }}</span></span>{% endfor %}

@@ -1,1 +1,20 @@
+{% comment %}
+  The default document template.
+
+  Most pages here write their own opening — a stage or a heading block at the
+  top of the region — so the template adds no furniture and the blocks run
+  from the first pixel. A concept that says `seo.templateH1` is telling us the
+  opposite: its documents expect the template to supply the heading, and their
+  regions start straight in on the body copy. That flag is what the SEO check
+  already reads to decide whether a missing H1 in the content is a fault, so
+  it is the same promise, kept here.
+{% endcomment %}
+{% if concept.seo.templateH1 %}
+  <header class="wb-section pad-compact">
+    <div class="container w-normal doc-head">
+      <h1 class="doc-title"{{ 'doc.title' | wbf }}>{{ doc.title | escape }}</h1>
+      {% if fields.lede %}<p class="doc-lede"{{ 'lede' | wbf }}>{{ fields.lede | escape }}</p>{% endif %}
+    </div>
+  </header>
+{% endif %}
 {% region 'content' %}
