@@ -910,7 +910,12 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-tiles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .sm-tiles.cols-2 { grid-template-columns: 1fr; }
 @media (min-width: 820px) { .sm-tiles.cols-2 { grid-template-columns: repeat(2, 1fr); } }
-.sm-tile { position: relative; display: grid; background: var(--plate); min-height: 20rem; isolation: isolate; }
+/* tall enough to actually see the photograph: the same 16:9 the site was
+   designed around on a desktop, squarer on a tablet, portrait on a phone */
+.sm-tile { position: relative; display: grid; background: var(--plate); aspect-ratio: 3/4; isolation: isolate; }
+@media (min-width: 768px) { .sm-tile { aspect-ratio: 1/1; } }
+@media (min-width: 1024px) { .sm-tile { aspect-ratio: 16/9; } }
+@supports not (aspect-ratio: 1) { .sm-tile { min-height: 36rem; } }
 .sm-tile-media { margin: 0; position: absolute; inset: 0; z-index: -1; }
 /* the image helper wraps the <img> in a <picture>; both must fill the frame or
    the photo keeps its natural height and spills out of the tile */
@@ -919,7 +924,7 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-tile-media img { width: 100%; height: 100%; object-fit: cover; }
 .sm-tile::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(90deg, var(--plate-deep) 0%, color-mix(in oklch, var(--plate-deep) 72%, transparent) 46%, transparent 78%);
+  background: linear-gradient(90deg, color-mix(in oklch, var(--plate-deep) 86%, transparent) 0%, color-mix(in oklch, var(--plate-deep) 50%, transparent) 34%, transparent 60%);
 }
 .sm-tile-body { align-self: end; padding: clamp(1.4rem, 4vw, 2.8rem); max-width: 42rem; display: grid; gap: 0.9rem; justify-items: start; }
 .sm-tile-title { font-size: var(--text-xl); text-transform: uppercase; letter-spacing: var(--track-display); }
@@ -945,10 +950,12 @@ a.sec-cell:hover { background: var(--bg-subtle); }
 .sm-hero-view { display: grid; position: relative; }
 .sm-hero-slide {
   grid-area: 1 / 1; position: relative; display: grid; align-items: end;
-  min-height: clamp(22rem, 62vh, 40rem);
+  width: 100%; aspect-ratio: 3/4; min-height: 24rem;
   opacity: 0; transition: opacity .9s ease; pointer-events: none;
 }
 .sm-hero-slide.is-active { opacity: 1; pointer-events: auto; }
+@media (min-width: 640px) { .sm-hero-slide { aspect-ratio: 1/1; } }
+@media (min-width: 1024px) { .sm-hero-slide { aspect-ratio: 16/9; max-height: calc(100dvh - var(--header-h, 6rem)); } }
 @media (prefers-reduced-motion: reduce) { .sm-hero-slide { transition: none; } }
 .sm-hero-media { margin: 0; position: absolute; inset: 0; }
 .sm-hero-media img { width: 100%; height: 100%; object-fit: cover; }
@@ -1127,3 +1134,8 @@ a.card:hover { background: var(--bg-subtle); }
 .faqs-body > * { width: 100%; max-width: none; margin: 0; }
 .faqs-body .wb-heading { margin-top: 1.2rem; text-align: left; }
 .faqs-body .wb-faq { max-width: none; margin: 0; }
+
+/* the map fills its frame once it has loaded */
+.wb-map iframe, .wb-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+/* lift drawings are black line on white: they go on the light plate */
+.sm-diagram-plate { background: var(--bg-raise); border: 1px solid var(--line); }

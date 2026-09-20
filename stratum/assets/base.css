@@ -337,6 +337,12 @@
   }
   .site-header[data-nav-trigger="click"] .nav-item.open > .mega-panel.mega-full { translate: 0 0; }
 
+  /* closed on purpose (X, Escape, second click): beats :hover and :focus-within
+     until the pointer leaves, or a full-screen panel could never be dismissed */
+  @media (min-width: 1001px) {
+    .site-header .nav-item.nav-shut > :is(.drop-panel, .mega-panel, .mega-panel.mega-full) { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+  }
+
   /* ---------- full-screen panels (site.vars.navFill) ----------
      "Fill" means everything below the header: the brand, the nav and the close
      button stay reachable while the panel owns the rest of the viewport. The

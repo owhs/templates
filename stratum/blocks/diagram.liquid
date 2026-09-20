@@ -8,7 +8,7 @@
 {% endcomment %}
 <figure class="sm-diagram" data-art data-art-motion="always" data-art-leaders="true">
   {% if props.title %}<p class="eyebrow sm-diagram-over"{{ 'title' | wbe }}>{{ props.title | escape }}</p>{% endif %}
-  <div class="sm-diagram-plate art-plate on-plate"{{ 'image' | wbe: 'img' }}>
+  <div class="sm-diagram-plate art-plate"{{ 'image' | wbe: 'img' }}>
     {% if props.image %}
       {{ props.image | img: width: 1200, sizes: '(min-width: 900px) 760px, 92vw', class: 'sm-diagram-img' }}
     {% else %}

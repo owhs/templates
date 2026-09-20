@@ -37,9 +37,13 @@
       var rest = function (host) {
         var still = host.dataset.artMotion === 'off' || host.dataset.artMotion === 'hover'
         var plain = host.dataset.artLeaders === 'false'
-        return plain ? (still ? '#ps' : '#p') : (still ? '#s' : '')
+        return plain ? (still ? '#ps' : '#p') : (still ? '#s' : theme())
       }
-      var play = function (host) { return host.dataset.artLeaders === 'false' ? '#p' : '' }
+      /* A drawing inside an <img> cannot see the site's theme — left alone it
+         follows the visitor's operating system, so a light page on a dark-mode
+         laptop got dark drawings. With no other fragment to carry, say which. */
+      var theme = function () { return document.documentElement.dataset.theme === 'dark' ? '#dark' : '#light' }
+      var play = function (host) { return host.dataset.artLeaders === 'false' ? '#p' : theme() }
 
       document.querySelectorAll('[data-art]').forEach(function (host) {
         var img = host.querySelector('img')
@@ -68,6 +72,22 @@
           note.addEventListener('blur', blur)
         })
       })
+
+      /* every other drawing on the page (a photo row, a product cover) */
+      var plainSvgs = function () {
+        document.querySelectorAll('main img[src*=".svg"]').forEach(function (img) {
+          if (img.closest('[data-art], .sys-card, .mc-item, .mega-card, .rel-card, .post-card')) return
+          var frag = (img.getAttribute('src').split('#')[1] || '')
+          if (frag === '' || frag === 'light' || frag === 'dark') {
+            img.removeAttribute('srcset'); set(img, theme())
+          }
+        })
+        document.querySelectorAll('[data-art]').forEach(function (host) {
+          var img = host.querySelector('img'); if (img) { img.removeAttribute('srcset'); set(img, rest(host)) }
+        })
+      }
+      plainSvgs()
+      new MutationObserver(plainSvgs).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
 
       /* cards and menu thumbnails stay still until you point at them, so a
          catalogue of 26 systems is not 26 things moving at once */
@@ -165,6 +185,20 @@
       document.addEventListener('click', function (e) {
         if (open && !header.contains(e.target)) close()
       })
+    })();
+
+    /* ---- map -------------------------------------------------------------
+       The map loads itself as it comes into view; nobody should have to click
+       a grey box to see where the company is. */
+    ;(function () {
+      var maps = document.querySelectorAll('.wb-map[data-embed]')
+      if (!maps.length) return
+      var load = function (m) { var b = m.querySelector('.embed-facade'); if (b) b.click() }
+      if (!('IntersectionObserver' in window)) { maps.forEach(load); return }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); load(e.target) } })
+      }, { rootMargin: '300px' })
+      maps.forEach(function (m) { io.observe(m) })
     })();
 
     /* ---- hero slider -----------------------------------------------------
