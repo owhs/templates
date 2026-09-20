@@ -1139,3 +1139,23 @@ a.card:hover { background: var(--bg-subtle); }
 .wb-map iframe, .wb-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 /* lift drawings are black line on white: they go on the light plate */
 .sm-diagram-plate { background: var(--bg-raise); border: 1px solid var(--line); }
+
+/* lightbox: each part has its own column, so a single picture (no arrows) still
+   sits in the middle instead of sliding into the first column */
+.lightbox-overlay.is-gallery .lb-prev { grid-column: 1; grid-row: 1; }
+.lightbox-overlay.is-gallery .lb-stage { grid-column: 2; grid-row: 1; min-width: 0; }
+.lightbox-overlay.is-gallery .lb-next { grid-column: 3; grid-row: 1; }
+.lightbox-overlay.is-gallery { overflow: hidden; touch-action: none; }
+.lightbox-overlay.is-gallery img { transform-origin: center; will-change: transform; touch-action: none; cursor: zoom-in; -webkit-user-drag: none; }
+.lightbox-overlay.is-gallery :is(button, figcaption, .lb-count, .lb-tools) { position: relative; z-index: 2; }
+.lightbox-overlay.is-gallery .lb-close { position: absolute; z-index: 3; }
+.lightbox-overlay.is-gallery .lb-tools { position: absolute; bottom: 1rem; right: 1rem; display: flex; gap: 0.3rem; }
+.lightbox-overlay.is-gallery .lb-tools button { background: var(--plate-deep); }
+.lightbox-overlay.is-gallery .lb-tools .lb-fit { width: auto; padding-inline: 0.7rem; font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: 0.08em; }
+.lightbox-overlay.is-gallery.is-zoomed figcaption { visibility: hidden; }
+
+/* logos and badges (pictures shown whole, not cropped) stay a sensible size
+   however wide the row is */
+.sm-photos.fit-contain { justify-content: center; grid-template-columns: repeat(auto-fit, minmax(0, 16rem)); gap: 1.5rem; }
+.sm-photos.fit-contain .sm-photo { background: none; }
+.sm-photos.fit-contain img { padding: 0; max-height: 12rem; }
