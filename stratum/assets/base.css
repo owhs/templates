@@ -202,7 +202,28 @@
     transition: background .15s, color .15s, border-color .15s;
   }
   .header-cta:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
-  @media (max-width: 1200px) { .header-cta { display: none; } }
+  /* The bar holds the brand, seven menu items, the text-size control, this button
+     and the theme toggle. None of them may wrap — a two-line brand or a stacked
+     button is what "clunky" looked like — so they keep their size and the bar
+     tightens its spacing as the window narrows, then drops the button. */
+  .brand-text, .brand-name, .brand-sub, .header-cta, .nav-link { white-space: nowrap; }
+  .site-brand, .header-actions, .text-size, .theme-toggle { flex: none; }
+  @media (max-width: 1420px) {
+    .header-bar { gap: 1rem; }
+    .nav-link { padding-inline: 0.55rem; letter-spacing: 0.12em; }
+    .nav-link::after { left: 0.55rem; right: 0.55rem; }
+    .header-cta { padding: 0.66rem 0.95rem; letter-spacing: 0.1em; }
+    .header-actions { gap: 0.5rem; }
+  }
+  @media (max-width: 1260px) { .header-cta { display: none; } }
+  @media (max-width: 1120px) {
+    .header-bar { gap: 0.7rem; }
+    .nav-link { padding-inline: 0.4rem; letter-spacing: 0.08em; }
+    .nav-link::after { left: 0.4rem; right: 0.4rem; }
+    .text-size button { width: 1.75rem; height: 1.75rem; }
+  }
+  /* just above the point where the mobile menu takes over there is no room left */
+  @media (min-width: 1001px) and (max-width: 1060px) { .text-size { display: none; } }
 
   .nav-mobile-head, .drill-head { display: none; }
 
