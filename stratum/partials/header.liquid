@@ -32,7 +32,7 @@
       </div>
       {% comment %} The call-to-action is stored under `quoteHref` here and `ctaHref` on sites that ask for contact rather than a quote — take whichever exists. {% endcomment %}
       {% assign cta_href = site.vars.quoteHref | default: site.vars.ctaHref %}
-      {% if cta_href %}<a class="header-cta" href="{{ cta_href }}">{{ site.vars.quoteLabel | default: site.vars.ctaLabel | default: 'Request a quote' }}</a>{% endif %}
+      {% if cta_href %}<a class="header-cta" href="{{ cta_href }}">{{ site.vars.headerCtaLabel | default: site.vars.quoteLabel | default: site.vars.ctaLabel | default: 'Request a quote' }}</a>{% endif %}
       {% if show_theme_toggle %}<button class="theme-toggle" data-blockhouse="theme" aria-label="Switch colour theme" title="Theme">
         <svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.3 4.3L6 6M18 18l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.3 19.7L6 18M18 6l1.7-1.7"/></svg>
         <svg class="i-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
